@@ -1,30 +1,29 @@
 package com.grantip.backend.domain.scholarship.entity;
 
+import com.grantip.backend.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class scholarship {
+public class FavoriteScholar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    private String agencyName;
-
-    private String agencyType;
-
-    private String category;
-
-    private String support_type;
+    @ManyToOne
+    @JoinColumn(name = "scholar_id")
+    private Scholarship  scholarship;
 
     @Builder.Default
     private LocalDateTime createTime = LocalDateTime.now();

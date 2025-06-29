@@ -1,5 +1,7 @@
 package com.grantip.backend.domain.user.entity;
 
+import com.grantip.backend.domain.scholarship.entity.FavoriteScholar;
+import com.grantip.backend.domain.scholarship.entity.ScholarCalender;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -46,7 +48,13 @@ public class User {
     private boolean available = true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UserExtraInfo> userExtraInfoSet = new ArrayList<>();
+    private List<UserExtraInfo> userExtraInfoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ScholarCalender> scholarCalenderList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<FavoriteScholar> favoriteScholarList = new ArrayList<>();
 
     @Builder.Default
     private LocalDateTime createTime = LocalDateTime.now();
