@@ -1,6 +1,6 @@
 ---
 name: Issue Template
-about: 이슈 템플
+about: 이슈 템플릿
 title: "[Feat] "
 labels: ''
 assignees: ''
