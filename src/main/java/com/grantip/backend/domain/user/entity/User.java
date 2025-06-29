@@ -16,8 +16,8 @@ public class User extends BaseEntity {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)     //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?
-    @JoinColumn(name = "userExtraInfo_id")
-    private UserExtraInfo userExtraInfo;
+    @JoinColumn(name = "extra_info_id")
+    private UserExtraInfo extraInfo;
 
     private String username;
 

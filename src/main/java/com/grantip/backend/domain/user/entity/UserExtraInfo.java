@@ -15,7 +15,7 @@ public class UserExtraInfo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(mappedBy = "extraInfo")
     private User user;
 
     @Builder.Default
