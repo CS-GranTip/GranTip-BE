@@ -1,13 +1,8 @@
 package com.grantip.backend.domain.user.entity;
 
-import com.grantip.backend.domain.scholarship.entity.FavoriteScholar;
-import com.grantip.backend.domain.scholarship.entity.ScholarCalender;
+import com.grantip.backend.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Entity
@@ -15,10 +10,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)     //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?
+    @JoinColumn(name = "userExtraInfo_id")
+    private UserExtraInfo userExtraInfo;
 
     private String username;
 
@@ -46,18 +45,4 @@ public class User {
 
     @Builder.Default
     private boolean available = true;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UserExtraInfo> userExtraInfoList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ScholarCalender> scholarCalenderList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<FavoriteScholar> favoriteScholarList = new ArrayList<>();
-
-    @Builder.Default
-    private LocalDateTime createTime = LocalDateTime.now();
-
-    private LocalDateTime updateTime;
 }

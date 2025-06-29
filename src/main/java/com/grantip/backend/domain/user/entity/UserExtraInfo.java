@@ -1,9 +1,8 @@
 package com.grantip.backend.domain.user.entity;
 
+import com.grantip.backend.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Builder
 @Entity
@@ -11,13 +10,12 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserExtraInfo {
+public class UserExtraInfo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne      //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?ㄴ
-    @JoinColumn(name = "user_id")   
+    @OneToOne(mappedBy = "profile")
     private User user;
 
     @Builder.Default
@@ -51,9 +49,5 @@ public class UserExtraInfo {
 
     private float universityGrade;  //대학성적
 
-    @Builder.Default
-    private LocalDateTime createTime = LocalDateTime.now();
-
-    private LocalDateTime updateTime;
 }
 

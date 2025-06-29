@@ -1,13 +1,11 @@
 package com.grantip.backend.domain.scholarship.entity;
 
+import com.grantip.backend.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Builder
 @Entity
@@ -15,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Scholarship {
+public class Scholarship extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,14 +61,4 @@ public class Scholarship {
 
     private URL URL;    //신청 사이트
 
-    @OneToMany(mappedBy = ("scholar"), cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ScholarCalender> scholarCalenderList = new ArrayList<>();
-
-    @OneToMany(mappedBy = ("scholar"), cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<FavoriteScholar>  favoriteScholarList = new ArrayList<>();
-
-    @Builder.Default
-    private LocalDateTime createTime = LocalDateTime.now();
-
-    private LocalDateTime updateTime;
 }

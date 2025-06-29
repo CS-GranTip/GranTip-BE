@@ -1,10 +1,10 @@
-package com.grantip.backend.domain.scholarship.entity;
+package com.grantip.backend.domain.util.entity;
 
+import com.grantip.backend.domain.scholarship.entity.Scholarship;
+import com.grantip.backend.global.BaseEntity;
 import com.grantip.backend.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoriteScholar {
+public class ScholarCalender extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,10 +23,8 @@ public class FavoriteScholar {
 
     @ManyToOne
     @JoinColumn(name = "scholar_id")
-    private Scholarship  scholarship;
+    private Scholarship scholarship;
 
-    @Builder.Default
-    private LocalDateTime createTime = LocalDateTime.now();
+    private String memo;
 
-    private LocalDateTime updateTime;
 }
