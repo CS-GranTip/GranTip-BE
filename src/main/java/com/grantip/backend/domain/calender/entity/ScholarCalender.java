@@ -1,4 +1,4 @@
-package com.grantip.backend.domain.util.entity;
+package com.grantip.backend.domain.calender.entity;
 
 import com.grantip.backend.domain.scholarship.entity.Scholarship;
 import com.grantip.backend.global.BaseEntity;
@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoriteScholar extends BaseEntity {
+public class ScholarCalender extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,5 +24,7 @@ public class FavoriteScholar extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "scholar_id")
     private Scholarship scholarship;
+
+    private String memo;
 
 }

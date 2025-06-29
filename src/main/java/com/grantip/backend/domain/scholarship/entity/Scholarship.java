@@ -59,6 +59,6 @@ public class Scholarship extends BaseEntity {
 
     private Date endDate;       //신청마감일
 
-    private URL URL;    //신청 사이트
+    private String applyUrl;    //신청 사이트
 
 }
