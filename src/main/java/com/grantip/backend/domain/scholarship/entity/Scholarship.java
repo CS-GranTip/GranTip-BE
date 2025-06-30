@@ -1,10 +1,9 @@
 package com.grantip.backend.domain.scholarship.entity;
 
-import com.grantip.backend.global.BaseEntity;
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.net.URL;
 import java.util.Date;
 
 @Builder

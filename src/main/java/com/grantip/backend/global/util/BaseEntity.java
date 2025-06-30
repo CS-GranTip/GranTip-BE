@@ -1,4 +1,4 @@
-package com.grantip.backend.global;
+package com.grantip.backend.global.util;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
