@@ -1,6 +1,6 @@
 package com.grantip.backend.domain.user.entity;
 
-import com.grantip.backend.global.BaseEntity;
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +20,8 @@ public class User extends BaseEntity {
     private UserExtraInfo extraInfo;
 
     private String username;
+
+    private String loginId;
 
     private String password;
 

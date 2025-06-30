@@ -1,6 +1,6 @@
 package com.grantip.backend.domain.user.entity;
 
-import com.grantip.backend.global.BaseEntity;
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
