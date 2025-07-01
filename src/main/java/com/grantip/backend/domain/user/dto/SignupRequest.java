@@ -2,6 +2,7 @@ package com.grantip.backend.domain.user.dto;
 
 
 import com.grantip.backend.domain.user.entity.Gender;
+import com.grantip.backend.domain.user.entity.Role;
 import com.grantip.backend.domain.user.entity.UnivYear;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -30,9 +31,8 @@ public class SignupRequest {
     @Schema(example = "이찬양")
     private String username;
 
-    @NotBlank(message = "역할은 필수 입력값입니다.")
     @Schema(example = "USER")
-    private String role;
+    private Role role;
 
     @Schema(example = "01012345678")
     private String phone;
@@ -43,11 +43,9 @@ public class SignupRequest {
     @Schema(example = "양천고등학교")
     private String highschool;
 
-    @NotBlank(message = "학년은 필수 입력값입니다.")
     @Schema(example = "4학년")
     private UnivYear univYear;
 
-    @NotBlank(message = "성별은 필수 입력값입니다.")
     private Gender gender;
 
     private String address;

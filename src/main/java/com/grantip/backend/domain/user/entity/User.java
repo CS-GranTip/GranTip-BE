@@ -43,6 +43,7 @@ public class User extends BaseEntity {
 
     private String resiAddress; //주민등록상 주소
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder.Default
