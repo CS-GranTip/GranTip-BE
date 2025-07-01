@@ -40,7 +40,8 @@ public class AuthService {
 
         Role role;
         try {
-            role = Role.valueOf(request.getRole().toUpperCase());
+            // 왜 에러더라
+            role = request.getRole();
         } catch (IllegalArgumentException e) {
             throw new CustomException(ErrorCode.INVALID_ROLE);
         }

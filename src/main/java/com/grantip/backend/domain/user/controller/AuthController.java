@@ -2,17 +2,27 @@ package com.grantip.backend.domain.user.controller;
 
 
 //import io.swagger.v3.oas.annotations.tags.Tag;
+import com.grantip.backend.domain.token.service.TokenService;
 import com.grantip.backend.domain.user.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.dto.LoginRequest;
 import com.grantip.backend.domain.user.dto.LoginResponse;
 import com.grantip.backend.domain.user.dto.SignupRequest;
 import com.grantip.backend.domain.user.service.AuthService;
+import com.grantip.backend.global.code.ErrorCode;
+import com.grantip.backend.global.exception.CustomException;
 import com.grantip.backend.global.response.ApiResponse;
+import com.grantip.backend.global.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +32,9 @@ import org.springframework.web.bind.annotation.*;
 //@Tag(name = "사용자 인증 API")
 public class AuthController{
     private final AuthService authService;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
+    private final TokenService tokenService;
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Void>> signup(@Valid @RequestBody SignupRequest request){
@@ -30,12 +43,54 @@ public class AuthController{
                 .body(ApiResponse.<Void>builder().success(true).code(201).message("회원가입에 성공했습니다.").build());
     }
 
+    /*
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request){
         LoginResponse response = authService.login(request);
         return ResponseEntity.ok()
                 .body(ApiResponse.<LoginResponse>builder().result(response).success(true).code(200).message("로그인에 성공했습니다.").build());
     }
+
+     */
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<Void>> login(@RequestBody LoginRequest request) {
+
+        try {
+            // 인증 시도
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getLoginId(), request.getPassword())
+            );
+
+            // 인증 성공 시 사용자 정보 가져오기
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            // 토큰 생성
+            String accessToken = jwtUtil.createAccessToken(userDetails);
+            String refreshToken = jwtUtil.createRefreshToken(userDetails);
+
+            // 데베에 RefreshToken 저장
+            tokenService.saveRefreshToken(userDetails.getUsername(), refreshToken);
+
+
+            // ⬇️ RefreshToken을 HttpOnly 쿠키로 설정
+            ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+                    .httpOnly(true)
+                    .secure(true) // HTTPS 사용할 경우 true
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60) // 7일
+                    .sameSite("Strict") // 또는 "Lax", 필요에 따라 조정
+                    .build();
+
+            return ResponseEntity.ok()
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                    .body(ApiResponse.<Void>builder().success(true).code(201).message("로그인에 성공했습니다.").build());
+        } catch (BadCredentialsException e){
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
+        }
+
+    }
+
 
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<LoginResponse>> reissue(HttpServletRequest request){
