@@ -66,5 +66,6 @@ public class UserService {
         eventPublisher.publishEvent(new UserDeletedEvent(user));
     }
      */
+
 }
 
