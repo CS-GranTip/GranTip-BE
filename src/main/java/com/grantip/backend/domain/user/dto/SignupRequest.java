@@ -46,6 +46,7 @@ public class SignupRequest {
     @Schema(example = "4학년")
     private UnivYear univYear;
 
+    @Schema(example = "남자")
     private Gender gender;
 
     private String address;

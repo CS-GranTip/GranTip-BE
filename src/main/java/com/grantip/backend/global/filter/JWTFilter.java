@@ -47,21 +47,24 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 인증 필수 URI만 검사
         String authHeader = request.getHeader("Authorization");
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.replace("Bearer ", "");
+        // 헤더에서 꺼냈기 때문에 accessToken일 것임.
+        // String accessToken = request.getHeader("access");
+        String accessToken = authHeader.replace("Bearer ", "");
+        System.out.println(accessToken);
 
         // JWT 유효성 검사
         try {
-            jwtUtil.isValid(token);
+            jwtUtil.isValid(accessToken);
         } catch (ExpiredJwtException e) {
             // error response 설정
             setErrorResponse(response, ErrorCode.TOKEN_EXPIRED);
             return;
+            /////////////////// accessToken 만료시 응답형식결정
         }
 
         /*
@@ -73,15 +76,26 @@ public class JWTFilter extends OncePerRequestFilter {
         }
          */
 
+        // jwtUtil.getCategory(accessToken); 해서 access인지뭔지 확인가능
+        /*
         if (uri.equals("/auth/reissue")) {
             request.setAttribute("refreshToken", token);
         } else {
             request.setAttribute("accessToken", token);
-        }
+        */
 
+
+        String category = jwtUtil.getCategory(accessToken);
+        if(!category.equals("accessToken")) {
+            setErrorResponse(response, ErrorCode.INVALID_ACCESS_TOKEN);
+            return;
+        }
+        request.setAttribute("accessToken", accessToken);
+
+        // 토큰 확인되면 일시적인 세션을 만드는 부분. 로그인된 상태로 만들어주는 부분.
         // 사용자 정보 추출
-        String identifier = jwtUtil.getSubject(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(identifier);
+        String loginId = jwtUtil.getSubject(accessToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
         Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
         // SecurityContext에 등록

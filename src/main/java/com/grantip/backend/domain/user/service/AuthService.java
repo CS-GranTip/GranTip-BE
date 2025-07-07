@@ -1,6 +1,7 @@
 package com.grantip.backend.domain.user.service;
 
 
+import com.grantip.backend.domain.token.dto.TokenDto;
 import com.grantip.backend.domain.token.service.TokenService;
 import com.grantip.backend.domain.user.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.dto.LoginRequest;
@@ -81,12 +82,19 @@ public class AuthService {
             tokenService.saveRefreshToken(userDetails.getUsername(), refreshToken);
 
             return new LoginResponse(accessToken, refreshToken);
-        } catch (BadCredentialsException e){
+        } catch (BadCredentialsException e){ // 이런거 자동완성 되나봄
             throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
     }
+    /* 에러 로그찍어보기
+    log.warn("FCM 푸시 전송 실패 - token: {}, error: {}", token.getToken(), e.getMessage());
+                if (e.getMessage().contains("registration-token-not-registered")) {
+                    fcmTokenRepository.delete(token);
+                }
+     */
 
-    public LoginResponse reissue(String refreshToken) {
+    public TokenDto reissue(String refreshToken) {
+        System.out.println("1111111111111111111111111111111111");
         if (refreshToken == null) {
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
@@ -94,32 +102,32 @@ public class AuthService {
         // 토큰 부분만 추출
         refreshToken = refreshToken.replace("Bearer ", "");
 
+        System.out.println("22222222222222222222222222222222222");
         // refresh토큰 검증
-        if (!jwtUtil.isValid(refreshToken) || !"refresh".equals(jwtUtil.getCategory(refreshToken)) ) {
+        if (!jwtUtil.isValid(refreshToken) || !"refreshToken".equals(jwtUtil.getCategory(refreshToken)) ) {
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         String loginId = jwtUtil.getSubject(refreshToken);
 
+        System.out.println("333333333333333333333333333333333333333");
         String savedToken = tokenService.getRefreshToken(loginId);
-        if(savedToken == null){
+        if(savedToken == null){ // 데베에 없는 리프레시 토큰
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
+        System.out.println("44444444444444444444444444444444444444  ");
 
         CustomUserDetails userDetails = userService.loadUserDetailsByLoginId(loginId);
 
+        // refresh rotate네 리이슈할때마다 리프레시도 재발급
         String newAccessToken = jwtUtil.createAccessToken(userDetails);
         String newRefreshToken = jwtUtil.createRefreshToken(userDetails);
 
-        tokenService.saveRefreshToken(loginId, newRefreshToken);
+        tokenService.saveRefreshToken(loginId, newRefreshToken); // id가 같으니 덮어씌워지네
+        // 이전 리프레시토큰 블랙리스트 처리해야되는데 id랑 같이저장하니까 덮어씌워지겠지?
 
-        return new LoginResponse(newAccessToken, newRefreshToken);
+        return new TokenDto(newAccessToken, newRefreshToken);
     }
-/*
-    public void logout(String loginId) {
-        tokenService.deleteRefreshToken(loginId);
-    }
-*/
 
     public void logout(String identifier, String accessToken){
         // RefreshToken 삭제
