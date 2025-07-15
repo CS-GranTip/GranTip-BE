@@ -21,8 +21,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
 
-    public User findByLoginId(String LoginId){
-        return userRepository.findByLoginId(LoginId)
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email)
                 .orElseThrow(()-> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
@@ -30,22 +30,22 @@ public class UserService {
         return userRepository.findByRole(Role.ADMIN);
     }
 
-    public boolean existsByLoginId(String LoginId){
-        return userRepository.existsByLoginId(LoginId);
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
     }
 
     public void saveUser(User user){
         userRepository.save(user);
     }
 
-    public void verifyCurrentPassword(String LoginId, String currentPassword){
-        User user = findByLoginId(LoginId);
+    public void verifyCurrentPassword(String email, String currentPassword){
+        User user = findByEmail(email);
         if(!passwordEncoder.matches(currentPassword, user.getPassword())){
             throw new CustomException(ErrorCode.INCORRECT_CURRENT_PASSWORD);
         }
     }
-    public CustomUserDetails loadUserDetailsByLoginId(String loginId) {
-        return userRepository.findByLoginId(loginId)
+    public CustomUserDetails loadUserDetailsByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .<CustomUserDetails>map(CustomUserDetails::new)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
     }

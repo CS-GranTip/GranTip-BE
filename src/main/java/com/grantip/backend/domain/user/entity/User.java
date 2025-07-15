@@ -2,6 +2,8 @@ package com.grantip.backend.domain.user.entity;
 
 import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Builder
@@ -21,10 +23,11 @@ public class User extends BaseEntity {
 
     private String username;
 
-    private String loginId;
-
     private String password;
 
+    @Column(name = "email", unique = true, nullable = false)
+    @Email           // javax.validation.constraints.Email
+    @NotBlank
     private String email;
 
     private String phone;

@@ -94,8 +94,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰 확인되면 일시적인 세션을 만드는 부분. 로그인된 상태로 만들어주는 부분.
         // 사용자 정보 추출
-        String loginId = jwtUtil.getSubject(accessToken);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
+        String email = jwtUtil.getSubject(accessToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
         // SecurityContext에 등록

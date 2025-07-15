@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
-    String loginId;
+    String email;
     String username;
 }

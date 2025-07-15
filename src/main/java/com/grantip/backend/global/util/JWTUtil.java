@@ -39,7 +39,7 @@ public class JWTUtil {
      * @return
      */
     public String createAccessToken(CustomUserDetails customUserDetails) {
-        return createToken(ACCESS_CATEGORY, customUserDetails.getLoginId(), customUserDetails.getRole(), ACCESS_TOKEN_EXPIRATION);
+        return createToken(ACCESS_CATEGORY, customUserDetails.getEmail(), customUserDetails.getRole(), ACCESS_TOKEN_EXPIRATION);
     }
 
     /**
@@ -49,7 +49,7 @@ public class JWTUtil {
      * @return
      */
     public String createRefreshToken(CustomUserDetails customUserDetails) {
-        return createToken(REFRESH_CATEGORY, customUserDetails.getLoginId(), customUserDetails.getRole(), REFRESH_TOKEN_EXPIRATION);
+        return createToken(REFRESH_CATEGORY, customUserDetails.getEmail(), customUserDetails.getRole(), REFRESH_TOKEN_EXPIRATION);
     }
 
     /**

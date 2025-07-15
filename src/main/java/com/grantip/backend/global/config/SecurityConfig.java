@@ -82,10 +82,11 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**",
                                 "/actuator/health",
-                                "/auth/login", "/auth/signup", "/auth/reissue"
+                                "/auth/login", "/auth/signup", "/auth/reissue",
+                                "/auth/logout",
+                                "/email/send", "/email/verify"
                         ).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/auth/logout").permitAll()       // 프리플라이트 허용
-                        .requestMatchers("/auth/logout").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
 

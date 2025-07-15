@@ -58,24 +58,9 @@ public class AuthController{
     public ResponseEntity<ApiResponse<Void>> login(@RequestBody LoginRequest request) {
 
         try {
-            // 인증 시도
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getLoginId(), request.getPassword())
-            );
-
-            // 인증 성공 시 사용자 정보 가져오기
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-            // 토큰 생성
-            String accessToken = jwtUtil.createAccessToken(userDetails);
-            String refreshToken = jwtUtil.createRefreshToken(userDetails);
-
-            // 데베에 RefreshToken 저장
-            tokenService.saveRefreshToken(userDetails.getUsername(), refreshToken);
-
-
+            TokenDto tokenDto = authService.login(request);
             // ⬇️ RefreshToken을 HttpOnly 쿠키로 설정
-            ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+            ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokenDto.getRefreshToken())
                     .httpOnly(true)
                     .secure(true) // HTTPS 사용할 경우 true
                     .path("/")
@@ -84,7 +69,7 @@ public class AuthController{
                     .build();
 
             return ResponseEntity.ok()
-                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Authorization", "Bearer " + tokenDto.getAccessToken())
                     .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
                     .body(ApiResponse.<Void>builder().success(true).code(201).message("로그인에 성공했습니다.").build());
         } catch (BadCredentialsException e){
@@ -129,7 +114,7 @@ public class AuthController{
                                                     HttpServletRequest request){
         // 쿠키확인해서 refresh 기간 지났는지, 있는지 확인해서 예외처리 가능
         String accessToken = (String) request.getAttribute("accessToken");
-        authService.logout(userDetails.getLoginId(), accessToken);
+        authService.logout(userDetails.getEmail(), accessToken);
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", null)
                 .httpOnly(true)
