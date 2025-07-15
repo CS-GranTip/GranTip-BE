@@ -12,8 +12,8 @@ public class TokenService {
     private final TokenRepository refreshTokenRepository;
 
     @Transactional
-    public void saveRefreshToken(String loginId, String token) {
-        refreshTokenRepository.findByLoginId(loginId)
+    public void saveRefreshToken(String email, String token) {
+        refreshTokenRepository.findByEmail(email)
                 .ifPresentOrElse(
                         existingToken -> {
                             existingToken.setToken(token);
@@ -21,7 +21,7 @@ public class TokenService {
                         },
                         () -> {
                             RefreshToken refreshToken = RefreshToken.builder()
-                                    .loginId(loginId)
+                                    .email(email)
                                     .token(token)
                                     .build();
                             refreshTokenRepository.save(refreshToken);
@@ -30,15 +30,15 @@ public class TokenService {
     }
 
     @Transactional
-    public String getRefreshToken(String loginId) {
-        return refreshTokenRepository.findByLoginId(loginId)
+    public String getRefreshToken(String email) {
+        return refreshTokenRepository.findByEmail(email)
                 .map(RefreshToken::getToken)
                 .orElse(null);
     }
 
     @Transactional
-    public void deleteRefreshToken(String loginId) {
-        refreshTokenRepository.deleteByLoginId(loginId);
+    public void deleteRefreshToken(String email) {
+        refreshTokenRepository.deleteByEmail(email);
     }
 }
 

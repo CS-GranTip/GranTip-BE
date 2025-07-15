@@ -24,8 +24,8 @@ public class JWTUtil {
     @Value("${jwt.refresh-exp-time}")
     private long REFRESH_TOKEN_EXPIRATION;
 
-    private static final String ACCESS_CATEGORY = "access";
-    private static final String REFRESH_CATEGORY = "refresh";
+    private static final String ACCESS_CATEGORY = "accessToken";
+    private static final String REFRESH_CATEGORY = "refreshToken";
 
     private SecretKey getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -39,7 +39,7 @@ public class JWTUtil {
      * @return
      */
     public String createAccessToken(CustomUserDetails customUserDetails) {
-        return createToken(ACCESS_CATEGORY, customUserDetails.getUsername(), customUserDetails.getRole(), ACCESS_TOKEN_EXPIRATION);
+        return createToken(ACCESS_CATEGORY, customUserDetails.getEmail(), customUserDetails.getRole(), ACCESS_TOKEN_EXPIRATION);
     }
 
     /**
@@ -49,7 +49,7 @@ public class JWTUtil {
      * @return
      */
     public String createRefreshToken(CustomUserDetails customUserDetails) {
-        return createToken(REFRESH_CATEGORY, customUserDetails.getUsername(), customUserDetails.getRole(), REFRESH_TOKEN_EXPIRATION);
+        return createToken(REFRESH_CATEGORY, customUserDetails.getEmail(), customUserDetails.getRole(), REFRESH_TOKEN_EXPIRATION);
     }
 
     /**
@@ -168,6 +168,8 @@ public class JWTUtil {
                 .parseSignedClaims(token)
                 .getPayload()
                 .getExpiration();
+        System.out.println("///////////////////////////////////////");
+        System.out.println(expiration.getTime() - System.currentTimeMillis());
         return expiration.getTime() - System.currentTimeMillis();
     }
 }

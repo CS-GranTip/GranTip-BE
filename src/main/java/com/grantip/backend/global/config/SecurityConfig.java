@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -56,6 +58,7 @@ public class SecurityConfig {
                                 configuration.setAllowedMethods(Collections.singletonList("*"));
                                 configuration.setAllowCredentials(true);
                                 configuration.setAllowedHeaders(Collections.singletonList("*"));
+                                configuration.setExposedHeaders(List.of("Authorization"));
                                 configuration.setMaxAge(3600L);
 
                                 return configuration;
@@ -79,11 +82,16 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**",
                                 "/actuator/health",
-                                "/auth/login", "/auth/signup"
+                                "/auth/login", "/auth/signup", "/auth/reissue",
+                                "/auth/logout",
+                                "/email/send", "/email/verify"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/auth/logout").permitAll()       // 프리플라이트 허용
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+
                 )
+
 
                 // filter 추가
                 .addFilterBefore(new JWTFilter(jwtUtil, tokenService, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)

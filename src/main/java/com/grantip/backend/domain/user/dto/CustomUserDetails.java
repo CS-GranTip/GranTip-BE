@@ -27,12 +27,18 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
+    // CustomUserDetails.getUsername()이 email을 반환하도록 구현돼 있어야 합니다.
+    // 이래도 되나? getUsername을 쓰도록 강제되는 곳이 있겠지? 오버라이드면.
+    // 걍 그쪽을 getEmail로 바꾸는건 안되겠지
 
+    ////////////////////
     public String getRole() {
         return user.getRole().name();
     }
+
+    public String getEmail() {return user.getEmail();}
 
     @Override
     public boolean isAccountNonExpired() {
