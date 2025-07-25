@@ -59,12 +59,12 @@ public class AuthService {
                 .role(role)
                 .email(request.getEmail())
                 .phone(request.getPhone())
-                .university(request.getUniversity())
-                .highSchool(request.getHighschool())
-                .univYear(request.getUnivYear())
+                .current_school(request.getCurrent_school())
+                .high_school(request.getHigh_school())
+                .university_year(request.getUniversicy_year())
                 .gender(request.getGender())
                 .address(request.getAddress())
-                .resiAddress(request.getResiAddress())
+                .resident_address(request.getResident_address())
                 .build();
         userService.saveUser(user);
     }
