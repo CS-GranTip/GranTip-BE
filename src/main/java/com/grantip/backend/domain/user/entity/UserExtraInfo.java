@@ -4,50 +4,54 @@ import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Builder
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class UserExtraInfo extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "extraInfo")
+    // 1) user_id 외래키 맵핑
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
+    // 2) 자격 코드 컬렉션 / 어노테이션들 음.. 여긴 lazy도 되는거같은데
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "user_extra_qualifications",
+            joinColumns = @JoinColumn(name = "user_extra_info_id")
+    )
+    @Column(name = "qualification_code")
+    @Enumerated(EnumType.STRING)
     @Builder.Default
-    private boolean disabled = false;       //장애여부
+    private Set<QualificationCode> qualificationCodes = new HashSet<>();
 
-    @Builder.Default
-    private boolean multiChild = false;     //다자녀가정
+    // 3) 기타 필드
+    @Column(name = "high_school_grade")
+    private float high_school_grade;
 
-    @Builder.Default
-    private boolean nationalMerit = false;  //국가 유공, 보훈해당자
+    // SAT 점수들을 JSON 이나 CSV 형태로 문자열에 통째로 담아둘 때
+    @Lob
+    @Column(name = "sat_scores", columnDefinition = "TEXT")
+    private String sat_scores;
 
-    @Builder.Default
-    private boolean singleParent = false;   //한부모가정
+    @Column(name = "university_grade")
+    private float university_grade;
 
-    @Builder.Default
-    private boolean orphan = false;         //소년,소녀가장
+    @Column(name = "scholarship_support_interval")
+    private int scholarship_support_interval;
 
-    @Builder.Default
-    private boolean low_income = false;     //저소득층
+    @Column(name = "median_income_ratio")
+    private int median_income_ratio;
 
-    @Builder.Default
-    private boolean multiCulture = false;   //다문화
-
-    @Builder.Default
-    private boolean Defector = false;       //북한이탈주민
-
-    @Builder.Default
-    private boolean talent = false;         //특기자
-
-    private float highSchoolGrade;  //고등학교 성적
-
-    private float universityGrade;  //대학성적
-
+    @Column(name = "income_percentile_band")
+    private int income_percentile_band;
 }
+
 
