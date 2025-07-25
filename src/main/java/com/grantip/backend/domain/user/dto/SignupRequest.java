@@ -39,14 +39,14 @@ public class SignupRequest {
 
     @NotBlank
     @Schema(example = "세종대학교")
-    private String university;
+    private String current_school;
 
     @NotBlank
     @Schema(example = "양천고등학교")
-    private String highschool;
+    private String high_school;
 
     @Schema(example = "4학년")
-    private UnivYear univYear;
+    private UnivYear universicy_year;
 
     @Schema(example = "남자")
     private Gender gender;
@@ -55,7 +55,7 @@ public class SignupRequest {
     private String address;
 
     @NotBlank
-    private String resiAddress; //주민등록상 주소
+    private String resident_address; //주민등록상 주소
 
 
 }

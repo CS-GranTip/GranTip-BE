@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Gender {
     MALE("남자"),
-    FEMALE("여자");
+    FEMALE("여자"),
+    OTHER("기타");
 
     private final String description;
 
