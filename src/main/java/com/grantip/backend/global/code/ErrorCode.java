@@ -42,6 +42,7 @@ public enum ErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND, "요청하신 리소스를 찾을 수 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     UNIVERSITY_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "대학구분 카테고리를 찾을 수 없습니다."),
+    SCHOLARSHIP_NOT_FOUND(HttpStatus.NOT_FOUND, "장학금을 찾을 수 없습니다."),
 
     /*
      * 405 METHOD_NOT_ALLOWED: 허용되지 않은 Request Method 호출
