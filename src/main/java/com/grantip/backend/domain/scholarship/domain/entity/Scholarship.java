@@ -24,7 +24,6 @@ public class Scholarship {
   // 시스템 내부 고유 ID (PK)
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(columnDefinition = "BIGINT")
   private Long id;
 
   // 운영기관이 제공한 원본 번호

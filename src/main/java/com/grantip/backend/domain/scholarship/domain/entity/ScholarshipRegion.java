@@ -20,7 +20,6 @@ public class ScholarshipRegion {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(columnDefinition = "BIGINT")
   private Long id;
 
   // 연관된 장학금

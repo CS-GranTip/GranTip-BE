@@ -24,7 +24,6 @@ public class GeneralCriterion {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(columnDefinition = "BIGINT")
   private Long id;
 
   // Scholarship과의 다대일 관계

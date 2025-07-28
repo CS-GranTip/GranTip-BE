@@ -21,7 +21,6 @@ public class Region {
   // 고유 ID (PK)
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(columnDefinition = "BIGINT")
   private Long id;
 
   // 상위 지역 (자기 참조)

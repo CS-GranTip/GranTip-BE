@@ -21,7 +21,6 @@ public class UniversityCategory {
   // 고유 ID (PK)
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(columnDefinition = "BIGINT")
   private Long id;
 
   // 카테고리 이름
