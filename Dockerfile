@@ -2,7 +2,7 @@
 # -------------------------------------------------------------
 # 1) Builder 단계: Gradle로 JAR 빌드
 # -------------------------------------------------------------
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM eclipse-temurin:20-jdk-alpine AS builder
 WORKDIR /workspace
 
 # (1) Gradle 래퍼와 설정 복사
