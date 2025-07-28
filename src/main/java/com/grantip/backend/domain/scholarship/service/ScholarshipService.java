@@ -19,6 +19,12 @@ import org.springframework.stereotype.Service;
 public class ScholarshipService {
   private final ScholarshipRepository scholarshipRepository;
   private final ScholarshipMapper scholarshipMapper;
+  private final ScholarshipRepositoryCustom scholarshipRepositoryCustom;
+
+  // 장학금 검색 (카테고리별)
+  public Page<ScholarshipSummaryResponse> searchScholarships(ScholarshipSearchRequest request){
+    return scholarshipRepositoryCustom.searchScholarships(request, request.toPageable());
+  }
 
   // 장학금 상세 조회
   public ScholarshipDetailResponse findById(Long id){

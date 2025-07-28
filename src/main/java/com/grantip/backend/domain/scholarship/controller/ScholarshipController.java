@@ -21,6 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScholarshipController {
   private final ScholarshipService scholarshipService;
 
+  // 장학금 검색 (카테고리별)
+  @GetMapping
+  public ResponseEntity<ApiResponse<Page<ScholarshipSummaryResponse>>> searchScholarships(
+      @ParameterObject @Valid ScholarshipSearchRequest request) {
+    return ResponseEntity.ok(
+        ApiResponse
+            .<Page<ScholarshipSummaryResponse>>builder()
+            .success(true)
+            .code(200)
+            .result(scholarshipService.searchScholarships(request))
+            .message("장학금 검색 및 필터링 조회에 성공했습니다.")
+            .build());
+  }
+
   // 장학금 상세 조회
   @GetMapping("/{id}")
   public ResponseEntity<ApiResponse<ScholarshipDetailResponse>> findById(@PathVariable Long id){
