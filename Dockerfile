@@ -7,6 +7,7 @@ WORKDIR /workspace
 
 # (1) Gradle 래퍼와 설정 복사
 COPY gradlew settings.gradle build.gradle ./
+RUN chmod +x gradlew # gradlew에 실행권한 없는 문제 해결
 COPY gradle/ gradle/
 
 # (2) 의존성만 먼저 내려받아 캐시
