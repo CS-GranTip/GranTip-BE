@@ -1,7 +1,7 @@
 package com.grantip.backend.domain.user.dto;
 
+import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
 import com.grantip.backend.domain.user.entity.Gender;
-import com.grantip.backend.domain.user.entity.QualificationCode;
 import com.grantip.backend.domain.user.entity.UnivYear;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

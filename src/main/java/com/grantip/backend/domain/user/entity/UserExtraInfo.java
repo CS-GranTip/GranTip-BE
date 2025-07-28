@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.user.entity;
 
+import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
 import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,8 +22,8 @@ public class UserExtraInfo extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // 2) 자격 코드 컬렉션 / 어노테이션들 음.. 여긴 lazy도 되는거같은데
-    @ElementCollection(fetch = FetchType.EAGER)
+    // 2) 자격 코드 컬렉션 / 어노테이션들
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "user_extra_qualifications",
             joinColumns = @JoinColumn(name = "user_extra_info_id")
