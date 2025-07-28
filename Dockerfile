@@ -20,7 +20,7 @@ RUN ./gradlew bootJar --no-daemon
 # -------------------------------------------------------------
 # 2) Runtime 단계: 최소 이미지에 JAR만 복사해 실행
 # -------------------------------------------------------------
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:20-jdk-alpine
 LABEL authors="lcy21"
 WORKDIR /app
 
