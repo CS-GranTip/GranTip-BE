@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.user.domain.entity;
 
+import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import com.grantip.backend.domain.user.domain.constant.Gender;
 import com.grantip.backend.domain.user.domain.constant.Role;
 import com.grantip.backend.domain.user.domain.constant.UnivYear;
@@ -33,31 +34,31 @@ public class User extends BaseEntity {
 
     private String phone;
 
-    private String current_school;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_category_id")
+    private UniversityCategory universityCategory;
 
-    private String high_school;
+    private String currentSchool;
+
+    private String highSchool;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)     //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?
     @JoinColumn(name = "extra_info_id")
     private UserExtraInfo extraInfo;
 
     @Enumerated(EnumType.STRING)
-    private UnivYear university_year;
+    private UnivYear universityYear;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private String address; //현재 거주 주소
 
-    private String resident_address; //주민등록상 주소
+    private String residentAddress; //주민등록상 주소
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder.Default
     private boolean active = true;
-
-
-
-
 }
