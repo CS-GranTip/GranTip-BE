@@ -54,6 +54,10 @@ public class User extends BaseEntity {
     @Builder.Default
     private boolean active = true;
 
+    @Column(nullable = false)
+    private boolean available = true;
+
+
 
 
 
