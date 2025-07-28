@@ -2,12 +2,11 @@ package com.grantip.backend.domain.user.controller;
 
 
 //import io.swagger.v3.oas.annotations.tags.Tag;
-import com.grantip.backend.domain.token.dto.TokenDto;
+import com.grantip.backend.domain.token.domain.dto.TokenDto;
 import com.grantip.backend.domain.token.service.TokenService;
-import com.grantip.backend.domain.user.dto.CustomUserDetails;
-import com.grantip.backend.domain.user.dto.LoginRequest;
-import com.grantip.backend.domain.user.dto.LoginResponse;
-import com.grantip.backend.domain.user.dto.SignupRequest;
+import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
+import com.grantip.backend.domain.user.domain.dto.request.LoginRequest;
+import com.grantip.backend.domain.user.domain.dto.request.SignupRequest;
 import com.grantip.backend.domain.user.service.AuthService;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
@@ -23,8 +22,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

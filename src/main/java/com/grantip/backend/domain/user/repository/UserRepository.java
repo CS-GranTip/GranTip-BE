@@ -1,7 +1,7 @@
 package com.grantip.backend.domain.user.repository;
 
-import com.grantip.backend.domain.user.entity.Role;
-import com.grantip.backend.domain.user.entity.User;
+import com.grantip.backend.domain.user.domain.constant.Role;
+import com.grantip.backend.domain.user.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

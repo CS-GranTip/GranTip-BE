@@ -1,6 +1,6 @@
 package com.grantip.backend.domain.favorite.repository;
 
-import com.grantip.backend.domain.favorite.entity.FavoriteScholar;
+import com.grantip.backend.domain.favorite.domain.entity.FavoriteScholar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

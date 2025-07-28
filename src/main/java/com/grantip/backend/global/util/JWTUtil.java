@@ -1,6 +1,6 @@
 package com.grantip.backend.global.util;
 
-import com.grantip.backend.domain.user.dto.CustomUserDetails;
+import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
