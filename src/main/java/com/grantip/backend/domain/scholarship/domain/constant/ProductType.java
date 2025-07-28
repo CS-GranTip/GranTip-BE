@@ -2,6 +2,8 @@ package com.grantip.backend.domain.scholarship.domain.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.grantip.backend.global.code.ErrorCode;
+import com.grantip.backend.global.exception.CustomException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +28,6 @@ public enum ProductType {
         return type;
       }
     }
-    return null;
+    throw new CustomException(ErrorCode.INVALID_PRODUCT_TYPE);
   }
 }
