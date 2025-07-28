@@ -1,8 +1,8 @@
-package com.grantip.backend.domain.favorite.entity;
+package com.grantip.backend.domain.favorite.domain.entity;
 
 import com.grantip.backend.domain.scholarship.domain.entity.Scholarship;
 import com.grantip.backend.global.util.BaseEntity;
-import com.grantip.backend.domain.user.entity.User;
+import com.grantip.backend.domain.user.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

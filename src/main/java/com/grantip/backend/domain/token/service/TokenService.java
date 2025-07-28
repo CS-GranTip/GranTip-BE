@@ -1,6 +1,6 @@
 package com.grantip.backend.domain.token.service;
 
-import com.grantip.backend.domain.token.entity.RefreshToken;
+import com.grantip.backend.domain.token.domain.entity.RefreshToken;
 import com.grantip.backend.domain.token.repository.TokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

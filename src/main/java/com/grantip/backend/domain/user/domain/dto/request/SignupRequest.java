@@ -1,13 +1,12 @@
-package com.grantip.backend.domain.user.dto;
+package com.grantip.backend.domain.user.domain.dto.request;
 
 
-import com.grantip.backend.domain.user.entity.Gender;
-import com.grantip.backend.domain.user.entity.Role;
-import com.grantip.backend.domain.user.entity.UnivYear;
+import com.grantip.backend.domain.user.domain.constant.Gender;
+import com.grantip.backend.domain.user.domain.constant.Role;
+import com.grantip.backend.domain.user.domain.constant.UnivYear;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Getter

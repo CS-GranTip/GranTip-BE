@@ -1,13 +1,12 @@
-package com.grantip.backend.domain.user.dto;
+package com.grantip.backend.domain.user.domain.dto;
 
 
-import com.grantip.backend.domain.user.entity.User;
+import com.grantip.backend.domain.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 

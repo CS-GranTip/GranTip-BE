@@ -1,5 +1,8 @@
-package com.grantip.backend.domain.user.entity;
+package com.grantip.backend.domain.user.domain.entity;
 
+import com.grantip.backend.domain.user.domain.constant.Gender;
+import com.grantip.backend.domain.user.domain.constant.Role;
+import com.grantip.backend.domain.user.domain.constant.UnivYear;
 import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

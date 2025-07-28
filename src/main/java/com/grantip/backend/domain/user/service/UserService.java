@@ -1,11 +1,11 @@
 package com.grantip.backend.domain.user.service;
 
-import com.grantip.backend.domain.user.dto.CustomUserDetails;
-import com.grantip.backend.domain.user.dto.UpdateRequest;
-import com.grantip.backend.domain.user.dto.VerifyPassword;
-import com.grantip.backend.domain.user.entity.Role;
-import com.grantip.backend.domain.user.entity.User;
-import com.grantip.backend.domain.user.entity.UserExtraInfo;
+import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
+import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
+import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
+import com.grantip.backend.domain.user.domain.constant.Role;
+import com.grantip.backend.domain.user.domain.entity.User;
+import com.grantip.backend.domain.user.domain.entity.UserExtraInfo;
 import com.grantip.backend.domain.user.repository.UserRepository;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;

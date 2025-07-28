@@ -1,4 +1,4 @@
-package com.grantip.backend.domain.token.entity;
+package com.grantip.backend.domain.token.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

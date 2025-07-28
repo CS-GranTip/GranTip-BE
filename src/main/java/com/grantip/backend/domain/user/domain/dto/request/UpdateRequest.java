@@ -1,8 +1,8 @@
-package com.grantip.backend.domain.user.dto;
+package com.grantip.backend.domain.user.domain.dto.request;
 
 import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
-import com.grantip.backend.domain.user.entity.Gender;
-import com.grantip.backend.domain.user.entity.UnivYear;
+import com.grantip.backend.domain.user.domain.constant.Gender;
+import com.grantip.backend.domain.user.domain.constant.UnivYear;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

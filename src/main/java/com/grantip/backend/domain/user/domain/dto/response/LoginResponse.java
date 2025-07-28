@@ -1,4 +1,4 @@
-package com.grantip.backend.domain.user.dto;
+package com.grantip.backend.domain.user.domain.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

@@ -1,7 +1,7 @@
 package com.grantip.backend.domain.email.controller;
 
-import com.grantip.backend.domain.email.dto.EmailRequest;
-import com.grantip.backend.domain.email.dto.EmailVerify;
+import com.grantip.backend.domain.email.domain.dto.reqest.EmailRequest;
+import com.grantip.backend.domain.email.domain.dto.reqest.EmailVerify;
 import com.grantip.backend.domain.email.service.EmailService;
 import com.grantip.backend.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;

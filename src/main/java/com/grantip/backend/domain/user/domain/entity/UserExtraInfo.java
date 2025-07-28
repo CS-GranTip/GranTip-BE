@@ -1,4 +1,4 @@
-package com.grantip.backend.domain.user.entity;
+package com.grantip.backend.domain.user.domain.entity;
 
 import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
 import com.grantip.backend.global.util.BaseEntity;

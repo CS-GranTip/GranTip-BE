@@ -1,4 +1,4 @@
-package com.grantip.backend.domain.user.entity;
+package com.grantip.backend.domain.user.domain.constant;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
