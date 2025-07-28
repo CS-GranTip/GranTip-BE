@@ -1,19 +1,7 @@
 package com.grantip.backend.domain.user.domain.constant;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 public enum Gender {
-    MALE("남자"),
-    FEMALE("여자"),
-    OTHER("기타");
-
-    private final String description;
-
-    Gender(String description) {
-        this.description = description;
-    }
-    @JsonValue
-    public String getDescription(){
-        return description;
-    };
+    MALE,
+    FEMALE,
+    OTHER
 }
