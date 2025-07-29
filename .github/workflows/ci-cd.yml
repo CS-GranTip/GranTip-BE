@@ -51,8 +51,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:dev
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.IMAGE_NAME }}:dev
+            ${{ secrets.IMAGE_NAME }}:latest
 
   deploy:
     needs: build
@@ -82,7 +82,7 @@ jobs:
               -p 8080:8080 \
               -e SPRING_PROFILES_ACTIVE=prod \
               -v /etc/localtime:/etc/localtime:ro \
-              ${{ env.IMAGE_NAME }}:dev
+              ${{ secrets.IMAGE_NAME }}:dev
 
             # 3) dangling images 정리
             docker image prune -f
