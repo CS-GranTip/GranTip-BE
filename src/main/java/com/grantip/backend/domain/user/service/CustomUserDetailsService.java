@@ -1,7 +1,7 @@
 package com.grantip.backend.domain.user.service;
 
-import com.grantip.backend.domain.user.dto.CustomUserDetails;
-import com.grantip.backend.domain.user.entity.User;
+import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
+import com.grantip.backend.domain.user.domain.entity.User;
 import com.grantip.backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

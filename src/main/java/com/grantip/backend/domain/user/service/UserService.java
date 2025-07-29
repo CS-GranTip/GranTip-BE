@@ -1,11 +1,12 @@
 package com.grantip.backend.domain.user.service;
 
-import com.grantip.backend.domain.user.dto.CustomUserDetails;
-import com.grantip.backend.domain.user.dto.UpdateRequest;
-import com.grantip.backend.domain.user.dto.VerifyPassword;
-import com.grantip.backend.domain.user.entity.Role;
-import com.grantip.backend.domain.user.entity.User;
-import com.grantip.backend.domain.user.entity.UserExtraInfo;
+import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
+import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
+import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
+import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
+import com.grantip.backend.domain.user.domain.constant.Role;
+import com.grantip.backend.domain.user.domain.entity.User;
+import com.grantip.backend.domain.user.domain.entity.UserExtraInfo;
 import com.grantip.backend.domain.user.repository.UserRepository;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
@@ -22,7 +23,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ApplicationEventPublisher eventPublisher;
+    private final UniversityCategoryService universityCategoryService;
 
 
     public User findByEmail(String email){
@@ -87,12 +88,13 @@ public class UserService {
 
         // 2) User 필드 업데이트
         user.setPhone(req.getPhone());
-        user.setCurrent_school(req.getCurrent_school());
-        user.setHigh_school(req.getHigh_school());
-        user.setUniversity_year(req.getUniversity_year());
+        user.setUniversityCategory(universityCategoryService.findById(req.getUniversityCategoryId()));
+        user.setCurrentSchool(req.getCurrentSchool());
+        user.setHighSchool(req.getHighSchool());
+        user.setUniversityYear(req.getUniversityYear());
         user.setGender(req.getGender());
         user.setAddress(req.getAddress());
-        user.setResident_address(req.getResident_address());
+        user.setResidentAddress(req.getResidentAddress());
 
         // 3) UserExtraInfo 준비 (없으면 새로 생성)
         UserExtraInfo extra = user.getExtraInfo();
@@ -105,12 +107,12 @@ public class UserService {
 
         // 4) UserExtraInfo 필드 업데이트
         extra.setQualificationCodes(req.getQualificationCodes());
-        extra.setHigh_school_grade(req.getHigh_school_grade());
-        extra.setSat_scores(req.getSat_scores());
-        extra.setUniversity_grade(req.getUniversity_grade());
-        extra.setScholarship_support_interval(req.getScholarship_support_interval());
-        extra.setMedian_income_ratio(req.getMedian_income_ratio());
-        extra.setIncome_percentile_band(req.getIncome_percentile_band());
+        extra.setHighSchoolGrade(req.getHighSchoolGrade());
+        extra.setSatScores(req.getSatScores());
+        extra.setUniversityGrade(req.getUniversityGrade());
+        extra.setScholarshipSupportInterval(req.getScholarshipSupportInterval());
+        extra.setMedianIncomeRatio(req.getMedianIncomeRatio());
+        extra.setIncomePercentileBand(req.getIncomePercentileBand());
 
         // 5) 저장은 트랜잭션 커밋 시점에 자동 반영 (cascade=ALL 이면 userRepository.save(user) 만으로 충분)
         userRepository.save(user);

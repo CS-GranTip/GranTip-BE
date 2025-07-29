@@ -15,6 +15,10 @@ public enum ErrorCode {
     DUPLICATE_LOGIN_ID(HttpStatus.BAD_REQUEST, "이미 존재하는 아이디입니다."),
     INVALID_ROLE(HttpStatus.BAD_REQUEST, "유효하지 않은 역할입니다."),
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+    INVALID_UNIV_YEAR(HttpStatus.BAD_REQUEST, "유효하지 않은 대학 구분입니다."),
+    INVALID_PRODUCT_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 상품 구분입니다."),
+    INVALID_PROVIDER_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 운영 기관 구분입니다."),
+    INVALID_SCHOLARSHIP_CATEGORY(HttpStatus.BAD_REQUEST, "유효하지 않은 학자금 유형 구분입니다."),
 
     /*
      * 401 UNAUTHORIZED: 인증되지 않은 사용자의 요청
@@ -37,6 +41,8 @@ public enum ErrorCode {
      */
     NOT_FOUND(HttpStatus.NOT_FOUND, "요청하신 리소스를 찾을 수 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
+    UNIVERSITY_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "대학구분 카테고리를 찾을 수 없습니다."),
+    SCHOLARSHIP_NOT_FOUND(HttpStatus.NOT_FOUND, "장학금을 찾을 수 없습니다."),
 
     /*
      * 405 METHOD_NOT_ALLOWED: 허용되지 않은 Request Method 호출

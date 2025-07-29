@@ -3,18 +3,17 @@ package com.grantip.backend.domain.user.service;
 
 import com.grantip.backend.domain.email.repository.VerificationCodeRepository;
 import com.grantip.backend.domain.email.service.EmailService;
-import com.grantip.backend.domain.token.dto.TokenDto;
+import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
+import com.grantip.backend.domain.token.domain.dto.TokenDto;
 import com.grantip.backend.domain.token.service.TokenService;
-import com.grantip.backend.domain.user.dto.CustomUserDetails;
-import com.grantip.backend.domain.user.dto.LoginRequest;
-import com.grantip.backend.domain.user.dto.LoginResponse;
-import com.grantip.backend.domain.user.dto.SignupRequest;
-import com.grantip.backend.domain.user.entity.Role;
+import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
+import com.grantip.backend.domain.user.domain.dto.request.LoginRequest;
+import com.grantip.backend.domain.user.domain.dto.request.SignupRequest;
+import com.grantip.backend.domain.user.domain.constant.Role;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
-import com.grantip.backend.global.exception.EmailAuthException;
 import com.grantip.backend.global.util.JWTUtil;
-import com.grantip.backend.domain.user.entity.User;
+import com.grantip.backend.domain.user.domain.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +33,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final EmailService emailService;
     private final VerificationCodeRepository codeRepo;
+    private final UniversityCategoryService universityCategoryService;
 
     private static final String REDIS_PREFIX = "RT:";
 
@@ -59,12 +59,13 @@ public class AuthService {
                 .role(role)
                 .email(request.getEmail())
                 .phone(request.getPhone())
-                .current_school(request.getCurrent_school())
-                .high_school(request.getHigh_school())
-                .university_year(request.getUniversicy_year())
+                .universityCategory(universityCategoryService.findById(request.getUniversityCategoryId()))
+                .currentSchool(request.getCurrentSchool())
+                .highSchool(request.getHighSchool())
+                .universityYear(request.getUniversityYear())
                 .gender(request.getGender())
                 .address(request.getAddress())
-                .resident_address(request.getResident_address())
+                .residentAddress(request.getResidentAddress())
                 .build();
         userService.saveUser(user);
     }

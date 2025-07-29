@@ -1,9 +1,8 @@
 package com.grantip.backend.domain.user.controller;
 
-import com.grantip.backend.domain.user.dto.SignupRequest;
-import com.grantip.backend.domain.user.dto.UpdateRequest;
-import com.grantip.backend.domain.user.dto.UserResponse;
-import com.grantip.backend.domain.user.dto.VerifyPassword;
+import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
+import com.grantip.backend.domain.user.domain.dto.response.UserResponse;
+import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
 import com.grantip.backend.domain.user.service.UserService;
 import com.grantip.backend.global.response.ApiResponse;
 import jakarta.validation.Valid;
