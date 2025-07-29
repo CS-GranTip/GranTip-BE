@@ -51,8 +51,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.IMAGE_NAME }}:dev
-            ${{ secrets.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:dev
+            ${{ env.IMAGE_NAME }}:latest
 
   deploy:
     needs: build
@@ -64,27 +64,26 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}       # SSH 키를 시크릿에 넣어두세요
-          port: ${{ secrets.SERVER_PORT }}        # 예: 22
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
           script: |
             set -e
-            IMAGE=${{ secrets.IMAGE_NAME }}:dev
-            CONTAINER="my-spring-app-dev"
-            PORT=8080
 
-            echo "Pulling ${IMAGE}..."
-            docker pull $IMAGE
+            # 0) 8080 포트로 바인딩된 모든 컨테이너 제거
+            docker ps -q --filter "publish=8080" \
+              | xargs --no-run-if-empty docker rm -f
 
-            echo "Stopping & removing existing container..."
-            docker rm -f $CONTAINER 2>/dev/null || true
+            # 1) my-spring-app-dev 컨테이너도 혹시 남아있다면 제거
+            docker rm -f my-spring-app-dev || true
 
-            echo "Starting new container..."
+            # 2) 새 컨테이너 실행
             docker run -d \
-              --name $CONTAINER \
-              -p ${PORT}:8080 \
+              --name my-spring-app-dev \
+              -p 8080:8080 \
               -e SPRING_PROFILES_ACTIVE=prod \
               -v /etc/localtime:/etc/localtime:ro \
-              $IMAGE
+              ${{ env.IMAGE_NAME }}:dev
 
-            echo "Pruning dangling images..."
+            # 3) dangling images 정리
             docker image prune -f
+
