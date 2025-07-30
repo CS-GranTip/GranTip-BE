@@ -2,6 +2,7 @@
 # 사용자에게 Docker 그룹 권한 부여 (sudo 써야 되는거)
 # github secrets .yml파일에 cors부분 "*" 잘 감싸져있는지 확인
 # prod.yml 파일에서 cors설정 삭제 ("*" 파싱문제)
+# 삭제 후에도 ec2에서 로그가 똑같이 떠서 컨테이너 삭제 후 다시 진행
 name: CI/CD Pipeline
 
 on:
