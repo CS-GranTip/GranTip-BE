@@ -1,8 +1,11 @@
 package com.grantip.backend.domain.region.service;
 
 import com.grantip.backend.domain.region.domain.dto.response.RegionResponse;
+import com.grantip.backend.domain.region.domain.entity.Region;
 import com.grantip.backend.domain.region.mapper.RegionMapper;
 import com.grantip.backend.domain.region.repository.RegionRepository;
+import com.grantip.backend.global.code.ErrorCode;
+import com.grantip.backend.global.exception.CustomException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +32,10 @@ public class RegionService {
     return regionRepository.findByParentId(parentId).stream()
         .map(regionMapper::toResponse)
         .collect(Collectors.toList());
+  }
+
+  public Region findById(Long id){
+    return regionRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.REGION_NOT_FOUND));
   }
 }
