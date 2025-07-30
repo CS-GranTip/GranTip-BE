@@ -47,7 +47,7 @@ public class UpdateRequest {
     private Set<QualificationCode> qualificationCodes = new HashSet<>();
     // qualificationCodes 는 기본값으로 빈 HashSet 을 주입해서 null 검사를 피합니다.
 
-    private float highSchoolGrade;
+    private Double highSchoolGrade;
 
     private Double satAverageGrade;
 

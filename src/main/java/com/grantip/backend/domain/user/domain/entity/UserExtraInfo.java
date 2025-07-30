@@ -35,7 +35,7 @@ public class UserExtraInfo extends BaseEntity {
 
     // 3) 기타 필드
     @Column(name = "high_school_grade")
-    private float highSchoolGrade;
+    private Double highSchoolGrade;
 
     // 수능 평균 등급
     @Column(name = "sat_average_grade")
@@ -66,13 +66,13 @@ public class UserExtraInfo extends BaseEntity {
     private Double twoSemestersAgoGpa;
 
     @Column(name = "scholarship_support_interval")
-    private int scholarshipSupportInterval;
+    private Integer scholarshipSupportInterval;
 
     @Column(name = "median_income_ratio")
-    private int medianIncomeRatio;
+    private Integer medianIncomeRatio;
 
     @Column(name = "income_percentile_band")
-    private int incomePercentileBand;
+    private Integer incomePercentileBand;
 }
 
 
