@@ -3,6 +3,7 @@ package com.grantip.backend.domain.user.domain.dto.request;
 import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
 import com.grantip.backend.domain.user.domain.constant.Gender;
 import com.grantip.backend.domain.user.domain.constant.UnivYear;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -29,16 +30,17 @@ public class UpdateRequest {
     private String highSchool;
 
     @NotNull
+    @Schema(example = "SEVENTH_SEMESTER")
     private UnivYear universityYear;
 
     @NotNull
     private Gender gender;
 
-    @NotBlank
-    private String address;
+    @NotNull
+    private Long addressId;
 
-    @NotBlank
-    private String residentAddress;
+    @NotNull
+    private Long residentAddressId;
 
     // --- UserExtraInfo 필드 ---
     @Builder.Default

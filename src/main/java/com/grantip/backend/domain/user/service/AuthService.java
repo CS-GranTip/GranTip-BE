@@ -3,6 +3,7 @@ package com.grantip.backend.domain.user.service;
 
 import com.grantip.backend.domain.email.repository.VerificationCodeRepository;
 import com.grantip.backend.domain.email.service.EmailService;
+import com.grantip.backend.domain.region.service.RegionService;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.token.domain.dto.TokenDto;
 import com.grantip.backend.domain.token.service.TokenService;
@@ -34,6 +35,7 @@ public class AuthService {
     private final EmailService emailService;
     private final VerificationCodeRepository codeRepo;
     private final UniversityCategoryService universityCategoryService;
+    private final RegionService regionService;
 
     private static final String REDIS_PREFIX = "RT:";
 
@@ -64,8 +66,8 @@ public class AuthService {
                 .highSchool(request.getHighSchool())
                 .universityYear(request.getUniversityYear())
                 .gender(request.getGender())
-                .address(request.getAddress())
-                .residentAddress(request.getResidentAddress())
+                .address(regionService.findById(request.getAddressId()))
+                .residentAddress(regionService.findById(request.getResidentAddressId()))
                 .build();
         userService.saveUser(user);
     }

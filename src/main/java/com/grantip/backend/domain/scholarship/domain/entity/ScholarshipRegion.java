@@ -1,6 +1,6 @@
 package com.grantip.backend.domain.scholarship.domain.entity;
 
-import jakarta.persistence.Column;
+import com.grantip.backend.domain.region.domain.entity.Region;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

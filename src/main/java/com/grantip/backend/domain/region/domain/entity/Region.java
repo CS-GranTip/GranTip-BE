@@ -1,4 +1,4 @@
-package com.grantip.backend.domain.scholarship.domain.entity;
+package com.grantip.backend.domain.region.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

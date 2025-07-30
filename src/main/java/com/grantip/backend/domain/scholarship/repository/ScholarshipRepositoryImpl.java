@@ -2,7 +2,7 @@ package com.grantip.backend.domain.scholarship.repository;
 
 import com.grantip.backend.domain.scholarship.domain.dto.request.ScholarshipSearchRequest;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSummaryResponse;
-import com.grantip.backend.domain.scholarship.domain.entity.QRegion;
+import com.grantip.backend.domain.region.domain.entity.QRegion;
 import com.grantip.backend.domain.scholarship.domain.entity.QScholarship;
 import com.grantip.backend.domain.scholarship.domain.entity.QScholarshipRegion;
 import com.grantip.backend.global.util.database.QueryDslUtil;

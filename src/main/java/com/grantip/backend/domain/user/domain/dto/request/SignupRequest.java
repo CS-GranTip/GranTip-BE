@@ -56,11 +56,11 @@ public class SignupRequest {
     @Schema(example = "MALE")
     private Gender gender;
 
-    @NotBlank
-    private String address;
+    @NotNull
+    private Long addressId;
 
-    @NotBlank
-    private String residentAddress; //주민등록상 주소
+    @NotNull
+    private Long residentAddressId; //주민등록상 주소
 
     @Column(nullable = false)
     private boolean available = true;
