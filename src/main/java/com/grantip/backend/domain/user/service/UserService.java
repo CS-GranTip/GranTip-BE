@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.user.service;
 
+import com.grantip.backend.domain.region.service.RegionService;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
@@ -24,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UniversityCategoryService universityCategoryService;
+    private final RegionService regionService;
 
 
     public User findByEmail(String email){
@@ -93,8 +95,8 @@ public class UserService {
         user.setHighSchool(req.getHighSchool());
         user.setUniversityYear(req.getUniversityYear());
         user.setGender(req.getGender());
-        user.setAddress(req.getAddress());
-        user.setResidentAddress(req.getResidentAddress());
+        user.setAddress(regionService.findById(req.getAddressId()));
+        user.setResidentAddress(regionService.findById(req.getResidentAddressId()));
 
         // 3) UserExtraInfo 준비 (없으면 새로 생성)
         UserExtraInfo extra = user.getExtraInfo();
