@@ -1,11 +1,12 @@
 package com.grantip.backend.global.config;
 
-import com.grantip.backend.domain.user.service.CustomUserDetailsService;
 import com.grantip.backend.domain.token.service.TokenService;
+import com.grantip.backend.domain.user.service.CustomUserDetailsService;
 import com.grantip.backend.global.filter.JWTFilter;
 import com.grantip.backend.global.util.JWTUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,14 +22,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
+
     private final JWTUtil jwtUtil;
     private final TokenService tokenService;
     private final CustomUserDetailsService customUserDetailsService;
@@ -39,7 +39,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -47,23 +47,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // cors 처리
-                .cors(cors -> cors
-                        .configurationSource(new CorsConfigurationSource() {
-                            @Override
-                            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-
-                                CorsConfiguration configuration = new CorsConfiguration();
-
-                                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
-                                configuration.setAllowedMethods(Collections.singletonList("*"));
-                                configuration.setAllowCredentials(true);
-                                configuration.setAllowedHeaders(Collections.singletonList("*"));
-                                configuration.setExposedHeaders(List.of("Authorization"));
-                                configuration.setMaxAge(3600L);
-
-                                return configuration;
-                            }
-                        }))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 // csrf disable
                 .csrf(auth -> auth.disable())
@@ -92,7 +76,6 @@ public class SecurityConfig {
 
                 )
 
-
                 // filter 추가
                 .addFilterBefore(new JWTFilter(jwtUtil, tokenService, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
 
@@ -111,6 +94,23 @@ public class SecurityConfig {
                             response.setStatus(HttpServletResponse.SC_OK); // 403 대신 200 OK
                         }));
         return http.build();
+    }
+
+    /**
+     * CORS 설정 소스 빈
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*")); // 모든 Origin 허용
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
 
