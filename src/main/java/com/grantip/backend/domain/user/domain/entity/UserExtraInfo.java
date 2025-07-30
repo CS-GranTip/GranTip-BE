@@ -37,13 +37,33 @@ public class UserExtraInfo extends BaseEntity {
     @Column(name = "high_school_grade")
     private float highSchoolGrade;
 
-    // SAT 점수들을 JSON 이나 CSV 형태로 문자열에 통째로 담아둘 때
-    @Lob
-    @Column(name = "sat_scores", columnDefinition = "TEXT")
-    private String satScores;
+    // 수능 평균 등급
+    @Column(name = "sat_average_grade")
+    private Double satAverageGrade;
 
-    @Column(name = "university_grade")
-    private float universityGrade;
+    // 재학 중인 대학의 성적 기준 (4.5 또는 4.3)
+    @Column(name = "gpa_scale")
+    private Double gpaScale;
+
+    // 대학교 전체 평균 학점
+    @Column(name = "overall_gpa")
+    private Double overallGpa;
+
+    // 직전 학기 이수 학점
+    @Column(name = "previous_semester_credits")
+    private Integer previousSemesterCredits;
+
+    // 직전 학기 평균 학점
+    @Column(name = "previous_semester_gpa")
+    private Double previousSemesterGpa;
+
+    // 2학기 전 이수 학점
+    @Column(name = "two_semesters_ago_credits")
+    private Integer twoSemestersAgoCredits;
+
+    // 2학기 전 평균 학점
+    @Column(name = "two_semesters_ago_gpa")
+    private Double twoSemestersAgoGpa;
 
     @Column(name = "scholarship_support_interval")
     private int scholarshipSupportInterval;

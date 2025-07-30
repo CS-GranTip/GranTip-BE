@@ -49,9 +49,19 @@ public class UpdateRequest {
 
     private float highSchoolGrade;
 
-    private String satScores;
+    private Double satAverageGrade;
 
-    private float universityGrade;
+    private Double gpaScale;
+
+    private Double overallGpa;
+
+    private Integer previousSemesterCredits;
+
+    private Double previousSemesterGpa;
+
+    private Integer twoSemestersAgoCredits;
+
+    private Double twoSemestersAgoGpa;
 
     private int scholarshipSupportInterval;
 
