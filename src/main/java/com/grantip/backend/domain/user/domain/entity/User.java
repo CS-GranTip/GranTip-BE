@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.user.domain.entity;
 
+import com.grantip.backend.domain.region.domain.entity.Region;
 import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import com.grantip.backend.domain.user.domain.constant.Gender;
 import com.grantip.backend.domain.user.domain.constant.Role;
@@ -52,9 +53,13 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private String address; //현재 거주 주소
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_region_id")
+    private Region address; //현재 거주 주소
 
-    private String residentAddress; //주민등록상 주소
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resident_address_region_id")
+    private Region residentAddress; //주민등록상 주소
 
     @Enumerated(EnumType.STRING)
     private Role role;
