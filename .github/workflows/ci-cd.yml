@@ -36,9 +36,8 @@ jobs:
       - name: Create application-test.yml
         # secrets.APPLICATION_PROD_YML 에 와일드카드를 실제 개행문자로 포함한 YAML 문자열을 넣어두세요.
         run: |
-          echo "Creating application-prod.yml from secrets..."
+          echo "Creating application-test.yml from secrets..."
           echo "${{ secrets.APPLICATION_TEST_YML }}" > src/main/resources/application-test.yml
-          cat src/main/resources/application-prod.yml # 파일 내용 확인 (디버깅용)
 
       - name: Build JAR
         run: ./gradlew clean bootJar -x test -Dspring.profiles.active=test
