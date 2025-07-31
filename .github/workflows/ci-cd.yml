@@ -7,6 +7,7 @@
 # application-test.yml로 바꿔서 테스트
 # .yml 파일 이름 바꾸며 테스트
 # deploy 과정에 이미지 pull 코드 추가
+# EC2 용량 수정
 name: CI/CD Pipeline
 
 on:
