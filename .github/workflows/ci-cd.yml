@@ -83,6 +83,8 @@ jobs:
 
             # 1) my-spring-app-dev 컨테이너도 혹시 남아있다면 제거
             docker rm -f grantip-be-dev || true
+            
+            sudo -S docker pull ${{ secrets.DOCKERHUB_USERNAME }}/grantip-be-dev
 
             # 2) 새 컨테이너 실행
             docker run -d \
