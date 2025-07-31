@@ -6,6 +6,7 @@
 # 매번 application-prod.yml 파일이 secrets.APPLICATION_PROD_YML 값으로 덮어쓰기 되는지 확인
 # application-test.yml로 바꿔서 테스트
 # .yml 파일 이름 바꾸며 테스트
+# deploy 과정에 이미지 pull 코드 추가
 name: CI/CD Pipeline
 
 on:
@@ -91,9 +92,7 @@ jobs:
 
             # 1) my-spring-app-dev 컨테이너도 혹시 남아있다면 제거
             docker rm -f grantip-be-dev || true
-            
-            sudo -S docker pull ${{ secrets.DOCKERHUB_USERNAME }}/grantip-be-dev
-
+          
             # 2) 새 컨테이너 실행
             docker run -d \
               --name grantip-be-dev \
