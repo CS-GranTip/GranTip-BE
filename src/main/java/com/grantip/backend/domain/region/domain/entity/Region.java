@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.region.domain.entity;
 
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "region")
-public class Region {
+public class Region extends BaseEntity {
 
   // 고유 ID (PK)
   @Id

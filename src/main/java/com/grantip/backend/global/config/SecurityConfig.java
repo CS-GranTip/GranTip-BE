@@ -68,7 +68,10 @@ public class SecurityConfig {
                                 "/actuator/health",
                                 "/auth/login", "/auth/signup", "/auth/reissue",
                                 "/auth/logout",
-                                "/email/send", "/email/verify"
+                                "/email/send", "/email/verify",
+                                "/api/scholarships",
+                                "/api/scholarships/**",
+                                "/api/regions/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/auth/logout").permitAll()       // 프리플라이트 허용
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

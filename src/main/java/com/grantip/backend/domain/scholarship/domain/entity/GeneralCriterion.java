@@ -1,6 +1,7 @@
 package com.grantip.backend.domain.scholarship.domain.entity;
 
 import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,7 +21,7 @@ import org.hibernate.type.SqlTypes;
 @Getter
 @Setter
 @Table(name = "general_criterion")
-public class GeneralCriterion {
+public class GeneralCriterion extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

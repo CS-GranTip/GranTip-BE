@@ -4,6 +4,7 @@ import com.grantip.backend.domain.scholarship.domain.constant.BaseSemester;
 import com.grantip.backend.domain.scholarship.domain.constant.GradeCriterionType;
 import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
 import com.grantip.backend.domain.scholarship.domain.constant.ThresholdDirection;
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,7 +26,7 @@ import org.hibernate.type.SqlTypes;
 @Getter
 @Setter
 @Table(name = "grade_criterion")
-public class GradeCriterion {
+public class GradeCriterion extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

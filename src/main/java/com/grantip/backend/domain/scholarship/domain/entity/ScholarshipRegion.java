@@ -1,6 +1,7 @@
 package com.grantip.backend.domain.scholarship.domain.entity;
 
 import com.grantip.backend.domain.region.domain.entity.Region;
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "scholarship_region")
-public class ScholarshipRegion {
+public class ScholarshipRegion extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
