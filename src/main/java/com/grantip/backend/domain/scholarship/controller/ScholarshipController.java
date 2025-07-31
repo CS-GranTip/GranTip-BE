@@ -1,6 +1,8 @@
 package com.grantip.backend.domain.scholarship.controller;
 
+import com.grantip.backend.domain.scholarship.domain.dto.request.RecommendedScholarshipRequest;
 import com.grantip.backend.domain.scholarship.domain.dto.request.ScholarshipSearchRequest;
+import com.grantip.backend.domain.scholarship.domain.dto.response.RecommendedScholarshipResponse;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipDetailResponse;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSummaryResponse;
 import com.grantip.backend.domain.scholarship.service.ScholarshipService;
@@ -10,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +48,20 @@ public class ScholarshipController {
             .code(200)
             .result(scholarshipService.findById(id))
             .message("장학금 상세 조회에 성공했습니다.")
+            .build());
+  }
+
+  // 추천 장학금 조회
+  @GetMapping("/recommendation")
+  public ResponseEntity<ApiResponse<Page<RecommendedScholarshipResponse>>> recommend(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @ParameterObject @Valid RecommendedScholarshipRequest request){
+    return ResponseEntity.ok(
+        ApiResponse.<Page<RecommendedScholarshipResponse>>builder()
+            .success(true)
+            .code(200)
+            .result(scholarshipService.recommend(userDetails.getUsername(), request.toPageable()))
+            .message("추천 장학금 조회에 성공했습니다.")
             .build());
   }
 }

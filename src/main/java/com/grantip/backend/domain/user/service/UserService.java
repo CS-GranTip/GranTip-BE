@@ -12,7 +12,6 @@ import com.grantip.backend.domain.user.repository.UserRepository;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,8 +109,13 @@ public class UserService {
         // 4) UserExtraInfo 필드 업데이트
         extra.setQualificationCodes(req.getQualificationCodes());
         extra.setHighSchoolGrade(req.getHighSchoolGrade());
-        extra.setSatScores(req.getSatScores());
-        extra.setUniversityGrade(req.getUniversityGrade());
+        extra.setSatAverageGrade(req.getSatAverageGrade());
+        extra.setGpaScale(req.getGpaScale());
+        extra.setOverallGpa(req.getOverallGpa());
+        extra.setPreviousSemesterCredits(req.getPreviousSemesterCredits());
+        extra.setPreviousSemesterGpa(req.getPreviousSemesterGpa());
+        extra.setTwoSemestersAgoCredits(req.getTwoSemestersAgoCredits());
+        extra.setTwoSemestersAgoGpa(req.getTwoSemestersAgoGpa());
         extra.setScholarshipSupportInterval(req.getScholarshipSupportInterval());
         extra.setMedianIncomeRatio(req.getMedianIncomeRatio());
         extra.setIncomePercentileBand(req.getIncomePercentileBand());

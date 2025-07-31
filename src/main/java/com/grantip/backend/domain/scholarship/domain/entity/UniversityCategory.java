@@ -28,7 +28,6 @@ public class UniversityCategory {
   private String name;
 
   // 이 카테고리에 속하는 장학금 목록 (다대다 관계)
-  // Scholarship 엔티티에서 @JoinTable로 관계의 주인이 정의됩니다.
   @ManyToMany(mappedBy = "universityCategories")
   private Set<Scholarship> scholarships = new HashSet<>();
 }

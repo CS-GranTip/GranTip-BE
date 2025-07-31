@@ -151,4 +151,13 @@ public class Scholarship {
 
   @Column(length = 500)
   private String requiredDocumentsNotes;
+
+  @OneToMany(mappedBy = "scholarship", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<GradeCriterion> gradeCriteria = new HashSet<>();
+
+  @OneToMany(mappedBy = "scholarship", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<IncomeCriterion> incomeCriteria = new HashSet<>();
+
+  @OneToMany(mappedBy = "scholarship", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<GeneralCriterion> generalCriteria = new HashSet<>();
 }

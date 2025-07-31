@@ -1,7 +1,7 @@
 package com.grantip.backend.domain.scholarship.mapper;
 
+import com.grantip.backend.domain.scholarship.domain.dto.response.RecommendedScholarshipResponse;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipDetailResponse;
-import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSummaryResponse;
 import com.grantip.backend.domain.scholarship.domain.entity.Scholarship;
 import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import java.util.Arrays;
@@ -14,6 +14,22 @@ import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface ScholarshipMapper {
+
+
+  @Mapping(target = ".", source = "scholarship")
+  @Mapping(source = "scholarship.universityCategories", target = "universityCategories", qualifiedByName = "mapCategoriesToStrings")
+  @Mapping(source = "scholarship.gradeCriteriaDetail", target = "gradeCriteriaDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.incomeCriteriaDetail", target = "incomeCriteriaDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.supportDetail", target = "supportDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.specificQualificationDetail", target = "specificQualificationDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.regionResidenceDetail", target = "regionResidenceDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.selectionMethodDetail", target = "selectionMethodDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.selectionPersonnelDetail", target = "selectionPersonnelDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.qualificationRestrictionDetail", target = "qualificationRestrictionDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.recommendationNeededDetail", target = "recommendationNeededDetail", qualifiedByName = "splitDetail")
+  @Mapping(source = "scholarship.requiredDocumentsDetail", target = "requiredDocumentsDetail", qualifiedByName = "splitDetail")
+  @Mapping(target = "score", source = "score")
+  RecommendedScholarshipResponse toRecommendedResponse(Scholarship scholarship, double score);
 
   @Mapping(source = "universityCategories", target = "universityCategories", qualifiedByName = "mapCategoriesToStrings")
   @Mapping(source = "gradeCriteriaDetail", target = "gradeCriteriaDetail", qualifiedByName = "splitDetail")
