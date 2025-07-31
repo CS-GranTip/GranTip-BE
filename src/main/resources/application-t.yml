@@ -1,0 +1,64 @@
+spring:
+  #profiles: dev
+
+  # JPA / Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql:   true
+        format_sql: true
+        dialect:    org.hibernate.dialect.MySQLDialect
+
+
+  # 데이터소스: RDS(MySQL)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:               jdbc:mysql://grantip-mysql.cx4aoucu6dqm.ap-northeast-2.rds.amazonaws.com:3306/grantip
+    username:          admin
+    password:          "aqaq2114456178!"
+
+  # 메일: Naver SMTP
+  mail:
+    host:     smtp.naver.com
+    port:     587
+    username: cisdid202@naver.com
+    password: YX6ZFVXPV2U8
+    properties:
+      mail:
+        smtp:
+          auth:                 true
+          starttls:
+            enable:            true
+          connectiontimeout:   10000
+          timeout:             10000
+          writetimeout:        10000
+
+  # Redis: ElastiCache (Serverless)
+  data:
+    redis:
+      host: grantip-redis-18slaz.serverless.ap-northeast-2.cache.amazonaws.com
+      port: 6379
+
+# 서버 바인딩
+server:
+  address: 0.0.0.0
+  port:    8080
+
+# 로깅 레벨
+logging:
+  level:
+    org.springframework.security:   DEBUG
+    org.hibernate.orm.jdbc.bind:   TRACE
+
+# JWT 설정
+jwt:
+  secret-key:       zcR9P80KqqLmF5hT8dQ7VzXwJJgNZp3qrTy4FcRNm8L9H2zBxPVwP7L8RcNF5G2Q3xAW9cK6d
+  access-exp-time:  30000          # 30초 (테스트용)
+  refresh-exp-time: 7776000000     # 90일 (밀리초)
+
+# OTP TTL
+app:
+  otp:
+    ttl: 300000   # 5분 (밀리초)
