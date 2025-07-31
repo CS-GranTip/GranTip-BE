@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.scholarship.domain.entity;
 
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "university_category")
-public class UniversityCategory {
+public class UniversityCategory extends BaseEntity {
 
   // 고유 ID (PK)
   @Id

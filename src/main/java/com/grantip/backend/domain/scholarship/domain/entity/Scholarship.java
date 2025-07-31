@@ -3,6 +3,7 @@ package com.grantip.backend.domain.scholarship.domain.entity;
 import com.grantip.backend.domain.scholarship.domain.constant.ProductType;
 import com.grantip.backend.domain.scholarship.domain.constant.ProviderType;
 import com.grantip.backend.domain.scholarship.domain.constant.ScholarshipCategory;
+import com.grantip.backend.global.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "scholarship")
-public class Scholarship {
+public class Scholarship extends BaseEntity {
 
   // 시스템 내부 고유 ID (PK)
   @Id
