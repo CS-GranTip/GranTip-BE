@@ -34,14 +34,14 @@ jobs:
       - name: Grant Gradle wrapper exec permission
         run: chmod +x ./gradlew
 
-      - name: Create application-t.yml
+      - name: Create application-prod.yml
         # secrets.APPLICATION_PROD_YML 에 와일드카드를 실제 개행문자로 포함한 YAML 문자열을 넣어두세요.
         run: |
-          echo "Creating application-t.yml from secrets..."
-          echo "${{ secrets.APPLICATION_T_YML }}" > src/main/resources/application-t.yml
+          echo "Creating application-prod.yml from secrets..."
+          echo "${{ secrets.APPLICATION_PROD_YML }}" > src/main/resources/application-prod.yml
 
       - name: Build JAR
-        run: ./gradlew clean bootJar -x test -Dspring.profiles.active=t
+        run: ./gradlew clean bootJar -x test -Dspring.profiles.active=prod
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -76,6 +76,14 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             set -e
+            
+            IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/grantip-be
+            CONTAINER=grantip-be-dev
+            PORT=8080
+            
+            echo "Pulling ${IMAGE}:dev..."
+            # EC2에서 docker를 sudo 없이 못 쓰면 앞에 sudo 붙이세요:
+            docker pull ${IMAGE}:dev
 
             # 0) 8080 포트로 바인딩된 모든 컨테이너 제거
             docker ps -q --filter "publish=8080" \
@@ -90,7 +98,7 @@ jobs:
             docker run -d \
               --name grantip-be-dev \
               -p 8080:8080 \
-              -e SPRING_PROFILES_ACTIVE=t \
+              -e SPRING_PROFILES_ACTIVE=prod \
               -v /etc/localtime:/etc/localtime:ro \
               ${{ secrets.IMAGE_NAME }}:dev
 
