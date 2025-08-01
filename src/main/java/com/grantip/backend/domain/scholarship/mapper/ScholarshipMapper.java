@@ -2,6 +2,7 @@ package com.grantip.backend.domain.scholarship.mapper;
 
 import com.grantip.backend.domain.scholarship.domain.dto.response.RecommendedScholarshipResponse;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipDetailResponse;
+import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSummaryResponse;
 import com.grantip.backend.domain.scholarship.domain.entity.Scholarship;
 import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface ScholarshipMapper {
 
+  ScholarshipSummaryResponse toSummaryResponse(Scholarship scholarship);
 
   @Mapping(target = ".", source = "scholarship")
   @Mapping(source = "scholarship.universityCategories", target = "universityCategories", qualifiedByName = "mapCategoriesToStrings")
