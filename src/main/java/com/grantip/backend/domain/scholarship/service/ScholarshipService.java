@@ -4,6 +4,7 @@ import com.grantip.backend.domain.scholarship.domain.dto.request.ScholarshipSear
 import com.grantip.backend.domain.scholarship.domain.dto.response.RecommendedScholarshipResponse;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipDetailResponse;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSummaryResponse;
+import com.grantip.backend.domain.scholarship.domain.entity.Scholarship;
 import com.grantip.backend.domain.scholarship.mapper.ScholarshipMapper;
 import com.grantip.backend.domain.scholarship.repository.ScholarshipRepository;
 import com.grantip.backend.domain.scholarship.repository.ScholarshipRepositoryCustom;
@@ -26,6 +27,15 @@ public class ScholarshipService {
   private final ScholarshipRecommendationService recommendationService;
 
   /**
+   * 장학금 Id로 조회
+   */
+  @Transactional(readOnly = true)
+  public Scholarship findById(Long id){
+    return scholarshipRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.SCHOLARSHIP_NOT_FOUND));
+  }
+
+  /**
    * 장학금 검색 + 카테고리별 필터링 메서드
    */
   @Transactional(readOnly = true)
@@ -37,7 +47,7 @@ public class ScholarshipService {
    * 장학금 상세 조회 메서드
    */
   @Transactional(readOnly = true)
-  public ScholarshipDetailResponse findById(Long id){
+  public ScholarshipDetailResponse findDetailedScholarship(Long id){
     return scholarshipMapper.toDetailResponse(scholarshipRepository.findById(id)
         .orElseThrow(() -> new CustomException(ErrorCode.SCHOLARSHIP_NOT_FOUND)));
   }
