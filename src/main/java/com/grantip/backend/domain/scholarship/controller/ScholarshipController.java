@@ -46,7 +46,7 @@ public class ScholarshipController {
         ApiResponse.<ScholarshipDetailResponse>builder()
             .success(true)
             .code(200)
-            .result(scholarshipService.findById(id))
+            .result(scholarshipService.findDetailedScholarship(id))
             .message("장학금 상세 조회에 성공했습니다.")
             .build());
   }
