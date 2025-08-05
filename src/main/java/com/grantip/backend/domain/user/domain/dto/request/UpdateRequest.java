@@ -63,10 +63,10 @@ public class UpdateRequest {
 
     private Double twoSemestersAgoGpa;
 
-    private int scholarshipSupportInterval;
+    private Integer scholarshipSupportInterval;
 
-    private int medianIncomeRatio;
+    private Integer medianIncomeRatio;
 
-    private int incomePercentileBand;
+    private Integer incomePercentileBand;
 }
 
