@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.user.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grantip.backend.domain.region.domain.entity.Region;
 import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import com.grantip.backend.domain.user.domain.constant.Gender;
@@ -55,10 +56,12 @@ public class User extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_region_id")
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) Json 변환 오류
     private Region address; //현재 거주 주소
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resident_address_region_id")
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Region residentAddress; //주민등록상 주소
 
     @Enumerated(EnumType.STRING)
