@@ -1,11 +1,15 @@
 package com.grantip.backend.domain.user.service;
 
+import com.grantip.backend.domain.region.domain.entity.Region;
 import com.grantip.backend.domain.region.service.RegionService;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
 import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
 import com.grantip.backend.domain.user.domain.constant.Role;
+import com.grantip.backend.domain.user.domain.dto.response.MyPageResponse;
+import com.grantip.backend.domain.user.domain.dto.response.RegionDto;
+import com.grantip.backend.domain.user.domain.dto.response.UserResponse;
 import com.grantip.backend.domain.user.domain.entity.User;
 import com.grantip.backend.domain.user.domain.entity.UserExtraInfo;
 import com.grantip.backend.domain.user.repository.UserRepository;
@@ -97,14 +101,8 @@ public class UserService {
         user.setAddress(regionService.findById(req.getAddressId()));
         user.setResidentAddress(regionService.findById(req.getResidentAddressId()));
 
-        // 3) UserExtraInfo 준비 (없으면 새로 생성)
+        // 3) UserExtraInfo 준비
         UserExtraInfo extra = user.getExtraInfo();
-        if (extra == null) {
-            extra = UserExtraInfo.builder()
-                    .user(user)         // 양방향 연관관계 세팅
-                    .build();
-            user.setExtraInfo(extra);
-        }
 
         // 4) UserExtraInfo 필드 업데이트
         extra.setQualificationCodes(req.getQualificationCodes());
@@ -122,6 +120,70 @@ public class UserService {
 
         // 5) 저장은 트랜잭션 커밋 시점에 자동 반영 (cascade=ALL 이면 userRepository.save(user) 만으로 충분)
         userRepository.save(user);
+    }
+
+    @Transactional
+    public UserResponse getInfo(String identifier) {
+        // 1) 기존 User 조회
+        User user = findByEmail(identifier);
+        UserResponse userResponse = new UserResponse();
+
+        userResponse.setPhone(user.getPhone());
+        //userResponse.setUniversityCategory(user.getUniversityCategory());
+        userResponse.setCurrentSchool(user.getCurrentSchool());
+        userResponse.setHighSchool(user.getHighSchool());
+        userResponse.setUniversityYear(user.getUniversityYear());
+        userResponse.setGender(user.getGender());
+        //userResponse.setAddress(user.getAddress());
+        //userResponse.setResidentAddress(user.getResidentAddress());
+        if (user.getAddress() != null) {
+            Region a = user.getAddress();
+            userResponse.setAddress(new RegionDto(a.getId(), a.getRegionName()));
+        }
+        if (user.getResidentAddress() != null) {
+            Region r = user.getResidentAddress();
+            userResponse.setResidentAddress(new RegionDto(r.getId(), r.getRegionName()));
+        }
+
+
+        // UserExtraInfo 준비 (없으면 새로 생성)
+        UserExtraInfo extra = user.getExtraInfo();
+        if (extra == null) {
+            extra = UserExtraInfo.builder()
+                    .user(user)         // 양방향 연관관계 세팅
+                    .build();
+            user.setExtraInfo(extra);
+            return userResponse;
+        }
+
+        // UserExtraInfo 필드 업데이트
+        userResponse.setQualificationCodes(extra.getQualificationCodes());
+        userResponse.setHighSchoolGrade(extra.getHighSchoolGrade());
+        userResponse.setSatAverageGrade(extra.getSatAverageGrade());
+        userResponse.setGpaScale(extra.getGpaScale());
+        userResponse.setOverallGpa(extra.getOverallGpa());
+        userResponse.setPreviousSemesterCredits(extra.getPreviousSemesterCredits());
+        userResponse.setPreviousSemesterGpa(extra.getPreviousSemesterGpa());
+        userResponse.setTwoSemestersAgoCredits(extra.getTwoSemestersAgoCredits());
+        userResponse.setTwoSemestersAgoGpa(extra.getTwoSemestersAgoGpa());
+        userResponse.setScholarshipSupportInterval(extra.getScholarshipSupportInterval());
+        userResponse.setMedianIncomeRatio(extra.getMedianIncomeRatio());
+        userResponse.setIncomePercentileBand(extra.getIncomePercentileBand());
+
+        // 5) 저장은 트랜잭션 커밋 시점에 자동 반영 (cascade=ALL 이면 userRepository.save(user) 만으로 충분)
+        return userResponse;
+    }
+
+    @Transactional
+    public MyPageResponse myPageInfo(String identifier) {
+        User user = findByEmail(identifier);
+        MyPageResponse myPageResponse = new MyPageResponse();
+
+        myPageResponse.setUserId(user.getId());
+        myPageResponse.setUsername(user.getUsername());
+        myPageResponse.setUserUniversity(user.getCurrentSchool());
+
+        return myPageResponse;
     }
 
 
