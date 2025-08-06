@@ -12,6 +12,7 @@ import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
 import com.grantip.backend.global.response.ApiResponse;
 import com.grantip.backend.global.util.JWTUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -28,13 +29,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-//@Tag(name = "사용자 인증 API")
-public class AuthController{
+@Tag(
+    name = "사용자 인증 API",
+    description = "사용자 인증 관련 API 제공"
+)
+public class AuthController implements AuthControllerDocs {
     private final AuthService authService;
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
     private final TokenService tokenService;
 
+    @Override
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Void>> signup(@Valid @RequestBody SignupRequest request){
         authService.signup(request);
@@ -42,6 +47,8 @@ public class AuthController{
                 .body(ApiResponse.<Void>builder().success(true).code(201).message("회원가입에 성공했습니다.").build());
     }
 
+
+    @Override
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<Void>> login(@RequestBody LoginRequest request) {
 
@@ -66,7 +73,7 @@ public class AuthController{
 
     }
 
-
+    @Override
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<Void>> reissue(HttpServletRequest request){
         // String refreshToken = (String) request.getAttribute("refreshToken"); 로컬스토리지 일때인듯
@@ -97,6 +104,7 @@ public class AuthController{
     }
     // 아니다 refreshToken 도갖고와서 또 쿠키적용까지 똑같이 해야겠네
 
+    @Override
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                     HttpServletRequest request){

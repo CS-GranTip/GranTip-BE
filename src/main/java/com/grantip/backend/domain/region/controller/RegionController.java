@@ -3,6 +3,7 @@ package com.grantip.backend.domain.region.controller;
 import com.grantip.backend.domain.region.domain.dto.response.RegionResponse;
 import com.grantip.backend.domain.region.service.RegionService;
 import com.grantip.backend.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/regions")
-public class RegionController {
+@Tag(
+    name = "지역 API",
+    description = "지역 관련 API 제공"
+)
+public class RegionController implements RegionControllerDocs {
   private final RegionService regionService;
 
+  @Override
   @GetMapping("/root")
   public ResponseEntity<ApiResponse<List<RegionResponse>>> getRootRegions(){
     return ResponseEntity.ok(
@@ -28,6 +34,7 @@ public class RegionController {
             .build());
   }
 
+  @Override
   @GetMapping("/{parentId}/children")
   public ResponseEntity<ApiResponse<List<RegionResponse>>> getChildRegions(@PathVariable Long parentId){
     return ResponseEntity.ok(
