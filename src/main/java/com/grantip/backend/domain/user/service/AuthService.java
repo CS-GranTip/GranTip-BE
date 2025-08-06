@@ -62,12 +62,15 @@ public class AuthService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .universityCategory(universityCategoryService.findById(request.getUniversityCategoryId()))
+                .universityCategoryId(request.getUniversityCategoryId())
                 .currentSchool(request.getCurrentSchool())
                 .highSchool(request.getHighSchool())
                 .universityYear(request.getUniversityYear())
                 .gender(request.getGender())
                 .address(regionService.findById(request.getAddressId()))
+                .addressId(request.getAddressId())
                 .residentAddress(regionService.findById(request.getResidentAddressId()))
+                .residentAddressId(request.getResidentAddressId())
                 .build();
         userService.saveUser(user);
     }

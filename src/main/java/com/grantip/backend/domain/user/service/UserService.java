@@ -92,12 +92,15 @@ public class UserService {
         // 2) User 필드 업데이트
         user.setPhone(req.getPhone());
         user.setUniversityCategory(universityCategoryService.findById(req.getUniversityCategoryId()));
+        user.setUniversityCategoryId(req.getUniversityCategoryId());
         user.setCurrentSchool(req.getCurrentSchool());
         user.setHighSchool(req.getHighSchool());
         user.setUniversityYear(req.getUniversityYear());
         user.setGender(req.getGender());
         user.setAddress(regionService.findById(req.getAddressId()));
+        user.setAddressId(req.getAddressId());
         user.setResidentAddress(regionService.findById(req.getResidentAddressId()));
+        user.setResidentAddressId(req.getResidentAddressId());
 
         // 3) UserExtraInfo 준비
         UserExtraInfo extra = user.getExtraInfo();
@@ -128,7 +131,7 @@ public class UserService {
 
         userResponse.setEmail(user.getEmail());
         userResponse.setPhone(user.getPhone());
-        //userResponse.setUniversityCategory(user.getUniversityCategory());
+        userResponse.setUniversityCategoryId(user.getUniversityCategoryId());
         userResponse.setCurrentSchool(user.getCurrentSchool());
         userResponse.setHighSchool(user.getHighSchool());
         userResponse.setUniversityYear(user.getUniversityYear());
@@ -139,11 +142,13 @@ public class UserService {
             String full = regionService.getFullRegionName(addrId);
             userResponse.setAddress(full);
         }
+        userResponse.setAddressId(user.getAddressId());
         if (user.getResidentAddress() != null) {
             Long resId = user.getResidentAddress().getId();
             String full = regionService.getFullRegionName(resId);
             userResponse.setResidentAddress(full);
         }
+        userResponse.setResidentAddressId(user.getResidentAddressId());
 
 
         // UserExtraInfo 준비 (없으면 새로 생성)

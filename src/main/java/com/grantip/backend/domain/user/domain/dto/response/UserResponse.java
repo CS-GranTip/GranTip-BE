@@ -23,7 +23,7 @@ public class UserResponse {
 
     private String phone;
 
-    //private UniversityCategory universityCategory;
+    private Long universityCategoryId;
 
     private String currentSchool;
 
@@ -35,8 +35,10 @@ public class UserResponse {
     private Gender gender;
 
     private String address;
+    private Long addressId;
 
     private String residentAddress;
+    private Long residentAddressId;
 
     // --- UserExtraInfo 필드 ---
     @Builder.Default

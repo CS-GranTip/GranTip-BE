@@ -40,6 +40,8 @@ public class User extends BaseEntity {
     @JoinColumn(name = "university_category_id")
     private UniversityCategory universityCategory;
 
+    private Long universityCategoryId;
+
     private String currentSchool;
 
     private String highSchool;
@@ -59,10 +61,14 @@ public class User extends BaseEntity {
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) Json 변환 오류
     private Region address; //현재 거주 주소
 
+    private Long addressId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resident_address_region_id")
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Region residentAddress; //주민등록상 주소
+
+    private Long residentAddressId;
 
     @Enumerated(EnumType.STRING)
     private Role role;
