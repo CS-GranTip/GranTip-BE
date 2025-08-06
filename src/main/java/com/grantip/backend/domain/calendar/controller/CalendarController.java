@@ -5,6 +5,7 @@ import com.grantip.backend.domain.calendar.domain.dto.response.CalendarScholarsh
 import com.grantip.backend.domain.calendar.service.CalendarService;
 import com.grantip.backend.domain.user.service.UserService;
 import com.grantip.backend.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,10 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/calendars")
-public class CalendarController {
+@Tag(
+    name = "캘린더 API",
+    description = "캘린더 관련 API 제공"
+)
+public class CalendarController implements CalendarControllerDocs {
     private final CalendarService calenderService;
     private final UserService userService;
 
+    @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<CalendarScholarshipResponse>>> getCalendar(
         @AuthenticationPrincipal UserDetails userDetails,
