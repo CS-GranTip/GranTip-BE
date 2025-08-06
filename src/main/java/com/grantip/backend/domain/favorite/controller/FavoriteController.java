@@ -6,6 +6,7 @@ import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSum
 import com.grantip.backend.domain.scholarship.service.ScholarshipService;
 import com.grantip.backend.domain.user.service.UserService;
 import com.grantip.backend.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -22,12 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/favorites")
-public class FavoriteController {
+@Tag(
+    name = "좋아요 API",
+    description = "좋아요 관련 API 제공"
+)
+public class FavoriteController implements FavoriteControllerDocs {
   private final FavoriteService favoriteService;
   private final ScholarshipService scholarshipService;
   private final UserService userService;
 
   // 좋아요 등록 or 취소
+  @Override
   @PostMapping("/{scholarshipId}")
   public ResponseEntity<ApiResponse<Boolean>> toggleFavorite(
       @AuthenticationPrincipal UserDetails userDetails,
@@ -52,6 +58,7 @@ public class FavoriteController {
     }
 
   // 사용자의 좋아요 목록 조회
+  @Override
   @GetMapping
   public ResponseEntity<ApiResponse<Page<ScholarshipSummaryResponse>>> getFavoritedScholarships(
       @AuthenticationPrincipal UserDetails userDetails,

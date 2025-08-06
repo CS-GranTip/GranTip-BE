@@ -7,6 +7,7 @@ import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipDet
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSummaryResponse;
 import com.grantip.backend.domain.scholarship.service.ScholarshipService;
 import com.grantip.backend.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -22,10 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/scholarships")
-public class ScholarshipController {
+@Tag(
+    name = "장학금 API",
+    description = "장학금 관련 API 제공"
+)
+public class ScholarshipController implements ScholarshipControllerDocs {
   private final ScholarshipService scholarshipService;
 
   // 장학금 검색 (카테고리별)
+  @Override
   @GetMapping
   public ResponseEntity<ApiResponse<Page<ScholarshipSummaryResponse>>> searchScholarships(
       @ParameterObject @Valid ScholarshipSearchRequest request) {
@@ -40,6 +46,7 @@ public class ScholarshipController {
   }
 
   // 장학금 상세 조회
+  @Override
   @GetMapping("/{id}")
   public ResponseEntity<ApiResponse<ScholarshipDetailResponse>> findById(@PathVariable Long id){
     return ResponseEntity.ok(
@@ -52,6 +59,7 @@ public class ScholarshipController {
   }
 
   // 추천 장학금 조회
+  @Override
   @GetMapping("/recommendation")
   public ResponseEntity<ApiResponse<Page<RecommendedScholarshipResponse>>> recommend(
       @AuthenticationPrincipal UserDetails userDetails,
