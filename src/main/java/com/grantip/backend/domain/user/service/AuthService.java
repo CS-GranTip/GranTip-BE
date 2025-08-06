@@ -53,7 +53,7 @@ public class AuthService {
         } catch (IllegalArgumentException e) {
             throw new CustomException(ErrorCode.INVALID_ROLE);
         }
-        //////////////////////////////////////////////////////////
+
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -102,15 +102,13 @@ public class AuthService {
      */
 
     public TokenDto reissue(String refreshToken) {
-        System.out.println("1111111111111111111111111111111111");
+
         if (refreshToken == null) {
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         // 토큰 부분만 추출
         refreshToken = refreshToken.replace("Bearer ", "");
-
-        System.out.println("22222222222222222222222222222222222");
 
         // refresh토큰 검증
         if (!jwtUtil.isValid(refreshToken) || !"refreshToken".equals(jwtUtil.getCategory(refreshToken)) ) {
@@ -119,12 +117,10 @@ public class AuthService {
 
         String email = jwtUtil.getSubject(refreshToken);
 
-        System.out.println("333333333333333333333333333333333333333");
         String savedToken = tokenService.getRefreshToken(email);
         if(savedToken == null){ // 데베에 없는 리프레시 토큰
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
-        System.out.println("44444444444444444444444444444444444444  ");
 
         CustomUserDetails userDetails = userService.loadUserDetailsByEmail(email);
 
@@ -143,9 +139,9 @@ public class AuthService {
         tokenService.deleteRefreshToken(identifier_email);
 
         // AccessToken 남은 만료 시간 추출 후 블랙리스트 처리
-        accessToken = accessToken.replace("Bearer ", "");
-        long expiration = jwtUtil.getRemainingTime(accessToken);
-        //tokenService.setBlacklist(accessToken, expiration);
+        // accessToken = accessToken.replace("Bearer ", "");
+        // long expiration = jwtUtil.getRemainingTime(accessToken);
+        // tokenService.setBlacklist(accessToken, expiration);
     }
 
 

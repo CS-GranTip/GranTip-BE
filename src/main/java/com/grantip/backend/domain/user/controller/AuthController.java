@@ -47,15 +47,7 @@ public class AuthController implements AuthControllerDocs {
                 .body(ApiResponse.<Void>builder().success(true).code(201).message("회원가입에 성공했습니다.").build());
     }
 
-    /*
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request){
-        LoginResponse response = authService.login(request);
-        return ResponseEntity.ok()
-                .body(ApiResponse.<LoginResponse>builder().result(response).success(true).code(200).message("로그인에 성공했습니다.").build());
-    }
 
-     */
     @Override
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<Void>> login(@RequestBody LoginRequest request) {

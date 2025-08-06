@@ -6,8 +6,13 @@ import com.grantip.backend.domain.region.mapper.RegionMapper;
 import com.grantip.backend.domain.region.repository.RegionRepository;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +42,19 @@ public class RegionService {
   public Region findById(Long id){
     return regionRepository.findById(id)
         .orElseThrow(() -> new CustomException(ErrorCode.REGION_NOT_FOUND));
+  }
+
+  // 주소 풀네임 뽑기
+  public String getFullRegionName(Long regionId) {
+    Region region = regionRepository.findById(regionId)
+            .orElseThrow(() -> new EntityNotFoundException("Region not found: " + regionId));
+
+    List<String> names = new ArrayList<>();
+    while (region != null) {
+      names.add(region.getRegionName());
+      region = region.getParent();
+    }
+    Collections.reverse(names);
+    return String.join(" ", names);
   }
 }
