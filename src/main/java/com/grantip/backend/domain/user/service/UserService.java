@@ -1,6 +1,5 @@
 package com.grantip.backend.domain.user.service;
 
-import com.grantip.backend.domain.region.domain.entity.Region;
 import com.grantip.backend.domain.region.service.RegionService;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
@@ -8,7 +7,6 @@ import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
 import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
 import com.grantip.backend.domain.user.domain.constant.Role;
 import com.grantip.backend.domain.user.domain.dto.response.MyPageResponse;
-import com.grantip.backend.domain.user.domain.dto.response.RegionDto;
 import com.grantip.backend.domain.user.domain.dto.response.UserResponse;
 import com.grantip.backend.domain.user.domain.entity.User;
 import com.grantip.backend.domain.user.domain.entity.UserExtraInfo;
@@ -128,21 +126,23 @@ public class UserService {
         User user = findByEmail(identifier);
         UserResponse userResponse = new UserResponse();
 
+        userResponse.setEmail(user.getEmail());
         userResponse.setPhone(user.getPhone());
         //userResponse.setUniversityCategory(user.getUniversityCategory());
         userResponse.setCurrentSchool(user.getCurrentSchool());
         userResponse.setHighSchool(user.getHighSchool());
         userResponse.setUniversityYear(user.getUniversityYear());
         userResponse.setGender(user.getGender());
-        //userResponse.setAddress(user.getAddress());
-        //userResponse.setResidentAddress(user.getResidentAddress());
+
         if (user.getAddress() != null) {
-            Region a = user.getAddress();
-            userResponse.setAddress(new RegionDto(a.getId(), a.getRegionName()));
+            Long addrId = user.getAddress().getId();
+            String full = regionService.getFullRegionName(addrId);
+            userResponse.setAddress(full);
         }
         if (user.getResidentAddress() != null) {
-            Region r = user.getResidentAddress();
-            userResponse.setResidentAddress(new RegionDto(r.getId(), r.getRegionName()));
+            Long resId = user.getResidentAddress().getId();
+            String full = regionService.getFullRegionName(resId);
+            userResponse.setResidentAddress(full);
         }
 
 
