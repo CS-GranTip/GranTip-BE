@@ -2,7 +2,6 @@ package com.grantip.backend.domain.user.controller;
 
 import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
 import com.grantip.backend.domain.user.domain.dto.response.MyPageResponse;
-import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
 import com.grantip.backend.domain.user.domain.dto.response.UserResponse;
 import com.grantip.backend.domain.user.service.UserService;
 import com.grantip.backend.global.response.ApiResponse;
@@ -64,14 +63,18 @@ public class UserController implements UserControllerDocs {
                 .body(ApiResponse.<Void>builder().success(true).code(200).message("회원 탈퇴에 성공했습니다.").build());
     }
 
-    // 유효한 비밀번호인지 검증 내용 확인, 프론트에서 처리할수도?
     @Override
-    @PatchMapping("/password/verify")
-    public ResponseEntity<ApiResponse<Void>> verifyPassword(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody VerifyPassword verifyPassword){
-        userService.verifyPassword(verifyPassword);
+    @PostMapping("/password/update")
+    public ResponseEntity<ApiResponse<Void>> updatePassword(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody String newPassword) {
+
+        userService.updatePassword(userDetails.getUsername(), newPassword);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.<Void>builder().success(true).code(200).message("비밀번호가 일치합니다.").build());
+                .body(ApiResponse.<Void>builder().success(true).code(200).message("비밀번호가 수정되었습니다.").build());
     }
+
+
 
 
 }
