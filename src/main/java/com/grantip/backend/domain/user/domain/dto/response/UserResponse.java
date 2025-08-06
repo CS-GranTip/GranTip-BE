@@ -19,6 +19,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserResponse {
     // --- User 필드 ---
+    private String email;
+
     private String phone;
 
     //private UniversityCategory universityCategory;
@@ -32,9 +34,9 @@ public class UserResponse {
 
     private Gender gender;
 
-    private RegionDto address;
+    private String address;
 
-    private RegionDto residentAddress;
+    private String residentAddress;
 
     // --- UserExtraInfo 필드 ---
     @Builder.Default
