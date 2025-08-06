@@ -1,6 +1,5 @@
 package com.grantip.backend.domain.user.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grantip.backend.domain.region.domain.entity.Region;
 import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import com.grantip.backend.domain.user.domain.constant.Gender;

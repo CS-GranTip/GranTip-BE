@@ -1,7 +1,5 @@
 package com.grantip.backend.domain.user.controller;
 
-
-//import io.swagger.v3.oas.annotations.tags.Tag;
 import com.grantip.backend.domain.token.domain.dto.TokenDto;
 import com.grantip.backend.domain.token.service.TokenService;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;

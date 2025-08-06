@@ -191,6 +191,11 @@ public class UserService {
         return myPageResponse;
     }
 
+    public void updatePassword(String identifier, String newPassword) {
+        User user = findByEmail(identifier);
+        user.setPassword(newPassword);
+    }
+
 
 
 }
