@@ -4,6 +4,7 @@ import com.grantip.backend.domain.email.domain.dto.reqest.EmailRequest;
 import com.grantip.backend.domain.email.domain.dto.reqest.EmailVerify;
 import com.grantip.backend.domain.email.service.EmailService;
 import com.grantip.backend.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/email")
 @RequiredArgsConstructor
-public class EmailController {
+@Tag(
+    name = "이메일 API",
+    description = "이메일 관련 API 제공"
+)
+public class EmailController implements EmailControllerDocs {
     private final EmailService emailService;
 
+    @Override
     @PostMapping("/send")
     public ResponseEntity<ApiResponse<Void>> sendCode(@RequestBody EmailRequest req) {
         emailService.sendVerificationCode(req.getEmail());
@@ -26,6 +32,7 @@ public class EmailController {
         );
     }
 
+    @Override
     @PostMapping("/verify")
     public ResponseEntity<ApiResponse<Void>> verifyCode(@RequestBody EmailVerify req) {
         emailService.verifyCode(req.getEmail(), req.getCode());
