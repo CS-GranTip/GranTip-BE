@@ -62,7 +62,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .universityCategory(universityCategoryService.findById(request.getUniversityCategoryId()))
-                .universityCategoryId(request.getUniversityCategoryId())
+                .universityCategoryIdReal(request.getUniversityCategoryId())
                 .currentSchool(request.getCurrentSchool())
                 .highSchool(request.getHighSchool())
                 .universityYear(request.getUniversityYear())

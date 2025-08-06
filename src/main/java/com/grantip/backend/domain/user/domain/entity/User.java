@@ -40,7 +40,7 @@ public class User extends BaseEntity {
     @JoinColumn(name = "university_category_id")
     private UniversityCategory universityCategory;
 
-    private Long universityCategoryId;
+    private Long universityCategoryIdReal;
 
     private String currentSchool;
 

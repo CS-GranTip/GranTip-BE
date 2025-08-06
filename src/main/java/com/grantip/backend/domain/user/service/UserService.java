@@ -92,7 +92,7 @@ public class UserService {
         // 2) User 필드 업데이트
         user.setPhone(req.getPhone());
         user.setUniversityCategory(universityCategoryService.findById(req.getUniversityCategoryId()));
-        user.setUniversityCategoryId(req.getUniversityCategoryId());
+        user.setUniversityCategoryIdReal(req.getUniversityCategoryId());
         user.setCurrentSchool(req.getCurrentSchool());
         user.setHighSchool(req.getHighSchool());
         user.setUniversityYear(req.getUniversityYear());
@@ -131,7 +131,7 @@ public class UserService {
 
         userResponse.setEmail(user.getEmail());
         userResponse.setPhone(user.getPhone());
-        userResponse.setUniversityCategoryId(user.getUniversityCategoryId());
+        userResponse.setUniversityCategoryId(user.getUniversityCategoryIdReal());
         userResponse.setCurrentSchool(user.getCurrentSchool());
         userResponse.setHighSchool(user.getHighSchool());
         userResponse.setUniversityYear(user.getUniversityYear());
