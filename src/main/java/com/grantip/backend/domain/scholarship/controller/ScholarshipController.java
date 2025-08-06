@@ -1,5 +1,6 @@
 package com.grantip.backend.domain.scholarship.controller;
 
+import com.grantip.backend.domain.scholarship.domain.dto.RecommendationResult;
 import com.grantip.backend.domain.scholarship.domain.dto.request.RecommendedScholarshipRequest;
 import com.grantip.backend.domain.scholarship.domain.dto.request.ScholarshipSearchRequest;
 import com.grantip.backend.domain.scholarship.domain.dto.response.RecommendedScholarshipResponse;
@@ -63,13 +64,35 @@ public class ScholarshipController implements ScholarshipControllerDocs {
   @GetMapping("/recommendation")
   public ResponseEntity<ApiResponse<Page<RecommendedScholarshipResponse>>> recommend(
       @AuthenticationPrincipal UserDetails userDetails,
-      @ParameterObject @Valid RecommendedScholarshipRequest request){
-    return ResponseEntity.ok(
-        ApiResponse.<Page<RecommendedScholarshipResponse>>builder()
-            .success(true)
-            .code(200)
-            .result(scholarshipService.recommend(userDetails.getUsername(), request.toPageable()))
-            .message("추천 장학금 조회에 성공했습니다.")
-            .build());
+      @ParameterObject @Valid RecommendedScholarshipRequest request) {
+
+    RecommendationResult result = scholarshipService.recommend(
+        userDetails.getUsername(),
+        request.toPageable()
+    );
+
+    return switch (result.status()) {
+      case COMPLETED -> ResponseEntity.ok(
+          ApiResponse.<Page<RecommendedScholarshipResponse>>builder()
+              .success(true)
+              .code(200)
+              .result(result.data())
+              .message("추천 장학금 조회에 성공했습니다.")
+              .build());
+      case PENDING -> ResponseEntity.accepted().body(
+          ApiResponse.<Page<RecommendedScholarshipResponse>>builder()
+              .success(true)
+              .code(202)
+              .result(null)
+              .message("추천 정보를 준비하고 있습니다. 잠시 후 다시 시도해주세요.")
+              .build());
+      case EMPTY -> ResponseEntity.ok(
+          ApiResponse.<Page<RecommendedScholarshipResponse>>builder()
+              .success(true)
+              .code(200)
+              .result(result.data())
+              .message("추천할 수 있는 장학금이 없습니다.")
+              .build());
+    };
   }
 }

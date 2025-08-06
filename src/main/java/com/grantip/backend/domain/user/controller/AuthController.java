@@ -110,7 +110,7 @@ public class AuthController implements AuthControllerDocs {
                                                     HttpServletRequest request){
         // 쿠키확인해서 refresh 기간 지났는지, 있는지 확인해서 예외처리 가능
         String accessToken = (String) request.getAttribute("accessToken");
-        authService.logout(userDetails.getEmail(), accessToken);
+        authService.logout(userDetails.getUsername(), accessToken);
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", null)
                 .httpOnly(true)

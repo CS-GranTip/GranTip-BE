@@ -1,9 +1,9 @@
 package com.grantip.backend.domain.user.service;
 
 
-import com.grantip.backend.domain.email.repository.VerificationCodeRepository;
 import com.grantip.backend.domain.email.service.EmailService;
 import com.grantip.backend.domain.region.service.RegionService;
+import com.grantip.backend.domain.scholarship.service.RecommendationAsyncService;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.token.domain.dto.TokenDto;
 import com.grantip.backend.domain.token.service.TokenService;
@@ -33,9 +33,9 @@ public class AuthService {
     private final JWTUtil jwtUtil;
     private final TokenService tokenService;
     private final EmailService emailService;
-    private final VerificationCodeRepository codeRepo;
     private final UniversityCategoryService universityCategoryService;
     private final RegionService regionService;
+    private final RecommendationAsyncService recommendationAsyncService;
 
     private static final String REDIS_PREFIX = "RT:";
 
@@ -84,6 +84,8 @@ public class AuthService {
 
             // 인증 성공 시 사용자 정보 가져오기
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            // 비동기 추천 계산 실행
+            recommendationAsyncService.triggerRecommendationCalculation(userDetails.getUsername());
 
             // 토큰 생성
             String accessToken = jwtUtil.createAccessToken(userDetails);

@@ -52,27 +52,33 @@ public interface AuthControllerDocs {
   @Operation(
       summary = "로그인",
       description = """
-            ### 요청 파라미터
-            - `email` (String, required): 이메일
-            - `password` (String, required): 비밀번호
+          ### 기능 요약
+          - 사용자 인증을 처리하고, 접근 토큰(Access Token)과 갱신 토큰(Refresh Token)을 발급합니다.
+          - **또한, 로그인 성공 시 사용자의 추천 캐시가 없는 경우, 백그라운드에서 개인별 맞춤 장학금 추천 목록 계산을 비동기적으로 시작합니다.**
+          - 이 비동기 작업은 로그인 응답 시간에 영향을 주지 않으며, 이후 추천 조회 API의 응답 속도를 향상시킵니다.
+          
+          ### 요청 파라미터
+          - `email` (String, required): 이메일
+          - `password` (String, required): 비밀번호
 
-            ### 응답 데이터
-            - 없음 (Void) (AccessToken은 `Authorization` 헤더, RefreshToken은 HttpOnly 쿠키에 설정)
+          ### 응답 데이터
+          - `accessToken` (String): 발급된 엑세스 토큰
+          - `refreshToken` (String): 발급된 리프레시 토큰
+          
+          ### 사용 방법
+          1. HTTP `POST /auth/login` 요청을 보냅니다.
+          2. 요청 본문에 LoginRequest JSON을 포함합니다.
+          3. 성공 시 응답 본문에 토큰 정보를 반환합니다.
 
-            ### 사용 방법
-            1. HTTP `POST /auth/login` 요청을 보냅니다.
-            2. 요청 본문에 LoginRequest JSON을 포함합니다.
-            3. 성공 시 `Authorization: Bearer {accessToken}` 헤더와 HttpOnly `refreshToken` 쿠키를 반환합니다.
+          ### 유의 사항
+          - **추천 계산 트리거:** 이 API는 성공적으로 로그인한 사용자의 추천 캐시가 없을 경우, 추천 목록 생성을 위한 백그라운드 작업을 트리거합니다. 
+          - 이후 추천 장학금 조회 API 호출 시, 이 계산이 진행 중이라면 `202 Accepted` 상태 코드가 반환될 수 있습니다.
 
-            ### 유의 사항
-            - HTTPS 환경에서만 사용해야 합니다.
-            - RefreshToken 쿠키는 `HttpOnly`, `SameSite=Strict`로 설정됩니다.
-
-            ### 예외 처리
-            - `INVALID_CREDENTIALS` (401): 아이디 또는 비밀번호가 올바르지 않습니다.
-            - `BAD_REQUEST` (400): 요청 형식 오류 시 반환됩니다.
-            - `INTERNAL_SERVER_ERROR` (500): 서버 내부 오류 발생 시 반환됩니다.
-            """
+          ### 예외 처리
+          - `INVALID_CREDENTIALS` (401): 아이디 또는 비밀번호가 올바르지 않습니다.
+          - `BAD_REQUEST` (400): 요청 형식 오류 시 반환됩니다.
+          - `INTERNAL_SERVER_ERROR` (500): 서버 내부 오류 발생 시 반환됩니다.
+          """
   )
   ResponseEntity<ApiResponse<Void>> login(
       LoginRequest request
