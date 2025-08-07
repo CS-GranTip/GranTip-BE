@@ -85,7 +85,7 @@ public class AuthService {
             // 인증 성공 시 사용자 정보 가져오기
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             // 비동기 추천 계산 실행
-            recommendationAsyncService.triggerRecommendationCalculation(userDetails.getUsername());
+            // recommendationAsyncService.triggerRecommendationCalculation(userDetails.getUsername());
 
             // 토큰 생성
             String accessToken = jwtUtil.createAccessToken(userDetails);
