@@ -9,6 +9,7 @@ import com.grantip.backend.domain.scholarship.domain.dto.response.RecommendedSch
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipDetailResponse;
 import com.grantip.backend.domain.scholarship.domain.dto.response.ScholarshipSummaryResponse;
 import com.grantip.backend.domain.scholarship.domain.entity.Scholarship;
+import com.grantip.backend.domain.scholarship.event.RecommendationCalculateEvent;
 import com.grantip.backend.domain.scholarship.mapper.ScholarshipMapper;
 import com.grantip.backend.domain.scholarship.repository.ScholarshipRepository;
 import com.grantip.backend.domain.scholarship.repository.ScholarshipRepositoryCustom;
@@ -17,6 +18,7 @@ import com.grantip.backend.global.exception.CustomException;
 import java.time.Duration;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +32,7 @@ public class ScholarshipService {
   private final ScholarshipRepository scholarshipRepository;
   private final ScholarshipMapper scholarshipMapper;
   private final ScholarshipRepositoryCustom scholarshipRepositoryCustom;
-  private final RecommendationAsyncService asyncService;
+  private final ApplicationEventPublisher applicationEventPublisher;
   private final RedisTemplate<String, Object> redisTemplate;
   private final ObjectMapper objectMapper;
 
@@ -92,7 +94,7 @@ public class ScholarshipService {
 
     // 캐시 Miss & No Lock -> 비동기 계산 트리거
     redisTemplate.opsForValue().set(lockKey, "locked", Duration.ofSeconds(30));
-    asyncService.triggerRecommendationCalculation(identifier);
+    applicationEventPublisher.publishEvent(new RecommendationCalculateEvent(identifier));
 
     return new RecommendationResult(RecommendationStatus.PENDING, null);
   }
