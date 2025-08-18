@@ -44,7 +44,7 @@ public class ScholarshipRecommendationService {
     UserExtraInfo userInfo = user.getExtraInfo();
 
     // 1차 필터링
-    List<Scholarship> candidates = scholarshipRepositoryCustom.findFilteredScholarships(user, userInfo);
+    List<Scholarship> candidates = scholarshipRepositoryCustom.findFilteredScholarships(user);
     log.info("사용자: {}, 1차 필터링(DB) 후보군: {}건", identifier, candidates.size());
 
     // 2차 필터링 - 복잡한 규칙 메모리에서 처리
@@ -107,6 +107,8 @@ public class ScholarshipRecommendationService {
    * 단일 성적 기준(GradeCriterion)을 사용자가 만족하는지 확인하는 헬퍼 메서드
    */
   private boolean userMeetGradeCriterion(GradeCriterion criterion, User user, UserExtraInfo userInfo){
+    if(userInfo == null) return true;
+
     // 사용자의 학적 상태 확인 (FRESHMAN 또는 그 외)
     boolean isFreshman = user.getUniversityYear() == UnivYear.FRESHMAN;
 
@@ -135,6 +137,7 @@ public class ScholarshipRecommendationService {
    * GPA(평균 평점) 조건 검사
    */
   private boolean checkGpaCriterion(GradeCriterion criterion, UserExtraInfo userInfo){
+    if(userInfo == null) return true;
     if(userInfo.getGpaScale() == null) return false; // 사용자가 성적 기준을 입력 안 했으면 false
 
     Double userGpa = null;
@@ -166,6 +169,8 @@ public class ScholarshipRecommendationService {
    * 이수 학점 조건 검사
    */
   private boolean checkCreditsCriterion(GradeCriterion criterion, UserExtraInfo userInfo){
+    if(userInfo == null) return true;
+
     Integer userCredits = null;
     Integer requiredCredits = criterion.getCredits();
 
@@ -192,6 +197,8 @@ public class ScholarshipRecommendationService {
    * 등급/석차 조건 검사 (주로 신입생의 내신, 수능)
    */
   private boolean checkRankCriterion(GradeCriterion criterion, UserExtraInfo userInfo){
+    if(userInfo == null) return true;
+
     Double userGrade = null;
     Double requiredRank = criterion.getRank();
     String keyword = criterion.getKeyword();
@@ -215,6 +222,8 @@ public class ScholarshipRecommendationService {
    */
   private boolean checkEtcCriterion(GradeCriterion criterion, UserExtraInfo userInfo){
     /*
+    if(userInfo == null) return true;
+
     String keyword = criterion.getKeyword();
     if(keyword != null && keyword.contains("우수")){
       // '성적 우수' - 전체 평점 4.0/4.5 (3.8/4.3) 이상인 경우를 '우수'로 판단
@@ -233,6 +242,8 @@ public class ScholarshipRecommendationService {
    * 단일 소득 기준(IncomeCriterion)을 사용자가 만족하는지 확인하는 헬퍼 메서드
    */
   private boolean userMeetIncomeCriterion(IncomeCriterion criterion, UserExtraInfo userInfo){
+    if(userInfo == null) return true;
+
     // 필수 자격 조건 검사
     List<QualificationCode> requiredQualifications = criterion.getRequiredQualifications();
     if(requiredQualifications != null && !requiredQualifications.isEmpty()){
@@ -295,6 +306,8 @@ public class ScholarshipRecommendationService {
    * @return 모든 성적 조건 통과 시 1000점
    */
   private double getGradeRequirementScore(Scholarship scholarship, User user, UserExtraInfo userInfo){
+    if(userInfo == null) return 1000;
+
     Set<GradeCriterion> criteria = scholarship.getGradeCriteria();
     if(criteria == null || criteria.isEmpty()) return 1000;
 
@@ -311,6 +324,8 @@ public class ScholarshipRecommendationService {
    * @return 모든 소득 조건 통과 시 1000점
    */
   private double getIncomeRequirementScore(Scholarship scholarship, UserExtraInfo userInfo){
+    if(userInfo == null) return 1000;
+
     Set<IncomeCriterion> criteria = scholarship.getIncomeCriteria();
     if(criteria == null || criteria.isEmpty()) return 1000;
 
@@ -327,6 +342,8 @@ public class ScholarshipRecommendationService {
    * @return 모든 필수 자격 조건 통과 시 1000점
    */
   private double getGeneralRequirementScore(Scholarship scholarship, UserExtraInfo userInfo){
+    if(userInfo == null) return 1000;
+
     Set<GeneralCriterion> criteria = scholarship.getGeneralCriteria();
     if(criteria == null || criteria.isEmpty()) return 1000;
 
@@ -380,6 +397,8 @@ public class ScholarshipRecommendationService {
    * 스코어링: 우대 자격 조건 만족 개수에 따라 점수를 부여
    */
   private double addPreferenceQualificationScore(Scholarship scholarship, UserExtraInfo userInfo){
+    if(userInfo == null) return 0.0;
+
     double qualificationScore = 0.0;
     Set<QualificationCode> userQualifications = userInfo.getQualificationCodes();
     if(userQualifications == null || userQualifications.isEmpty()){
@@ -403,6 +422,8 @@ public class ScholarshipRecommendationService {
    * 스코어링: 사용자 성적이 최소 요구 성적보다 높은 만큼 점수를 부여
    */
   private double addGpaMarginScore(Scholarship scholarship, UserExtraInfo userInfo){
+    if(userInfo == null) return 0.0;
+
     double gpaScore = 0.0;
     // GPA 조건 찾기
     GradeCriterion gpaCriterion = scholarship.getGradeCriteria().stream()
@@ -436,6 +457,8 @@ public class ScholarshipRecommendationService {
    * 여러 소득 기준 중 사용자에게 가장 유리한 점수를 찾아 반환
    */
   private double addIncomeLevelScore(Scholarship scholarship, UserExtraInfo userInfo){
+    if(userInfo == null) return 0.0;
+
     double maxIncomeScore = 0.0;
 
     for(IncomeCriterion criterion : scholarship.getIncomeCriteria()){
@@ -481,6 +504,8 @@ public class ScholarshipRecommendationService {
    * 스코어링: 성적 조건 중 ETC (예: '성적 우수자') 타입에 대해 성적이 높을 수록 높은 점수를 부여
    */
   private double addGradeEtcScore(Scholarship scholarship, UserExtraInfo userInfo){
+    if(userInfo == null) return 0.0;
+
     double etcScore = 0.0;
     for(GradeCriterion criterion : scholarship.getGradeCriteria()){
       if(criterion.getType() == GradeCriterionType.ETC && criterion.getKeyword() != null){
