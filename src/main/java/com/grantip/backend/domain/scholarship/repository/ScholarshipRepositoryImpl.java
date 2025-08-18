@@ -7,7 +7,6 @@ import com.grantip.backend.domain.scholarship.domain.entity.QScholarship;
 import com.grantip.backend.domain.scholarship.domain.entity.QScholarshipRegion;
 import com.grantip.backend.domain.scholarship.domain.entity.Scholarship;
 import com.grantip.backend.domain.user.domain.entity.User;
-import com.grantip.backend.domain.user.domain.entity.UserExtraInfo;
 import com.grantip.backend.global.util.database.QueryDslUtil;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -82,7 +81,7 @@ public class ScholarshipRepositoryImpl implements ScholarshipRepositoryCustom {
     return QueryDslUtil.fetchPage(contentQuery, countQuery, pageable);
   }
 
-  public List<Scholarship> findFilteredScholarships(User user, UserExtraInfo userInfo){
+  public List<Scholarship> findFilteredScholarships(User user){
     // 신청 기간 필터링 - 추후 데이터 많아지면 활성화
     /*LocalDate today = LocalDate.now();
     builder.and(scholarship.applicationStartDate.loe(today))
