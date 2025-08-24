@@ -138,12 +138,12 @@ public class ScholarshipRecommendationServiceTest {
 
   private void warmUp(){
     System.out.println("--- JVM 웜업을 시작합니다. ---");
-    for(int i=0; i<10; i++){
+    for(int i=0; i<10; i++) {
       scholarshipRecommendationService.calculateRecommendations(EMAIL_WITH_EXTRA);
     }
-    System.out.println("--- 웜업 완료. ---");
 
     redisTemplate.delete(cacheKey(EMAIL_WITH_EXTRA));
+    System.out.println("--- 웜업 완료. ---");
   }
 
   @Test
