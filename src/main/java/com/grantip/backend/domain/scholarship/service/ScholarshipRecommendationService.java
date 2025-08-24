@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +70,12 @@ public class ScholarshipRecommendationService {
     log.info("사용자 추천 계산 완료: {}. 최종 추천 수: {}건", identifier, result.size());
     return result;
   }
+
+  /**
+   * 캐시 비우기
+   */
+  @CacheEvict(cacheNames = "recommendations", key = "#identifier", beforeInvocation = true)
+  public void evict(String identifier) {}
 
   /**
    * Scholarship 객체를 RecommendedScholarshipResponse DTO로 변환, 점수를 계산하여 포함
