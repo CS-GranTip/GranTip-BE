@@ -148,18 +148,24 @@ public class ScholarshipRecommendationPerformanceTest {
     });
   }
 
-  private void warmUp(){
+  private void warmUp() throws Exception {
     System.out.println("--- JVM 웜업을 시작합니다. ---");
+    // 서비스 계층 웜업
     for(int i=0; i<10; i++){
       scholarshipRecommendationService.calculateRecommendations(TEST_USER_IDENTIFIER);
     }
-    System.out.println("--- 웜업 완료. ---");
+
+    // API 웹 계층 웜업
+    mockMvc.perform(get("/api/scholarships/recommendation")
+            .with(user(TEST_USER_IDENTIFIER)))
+        .andExpect(status().isOk());
 
     redisTemplate.delete(CACHE_KEY);
+    System.out.println("--- 웜업 완료. ---");
   }
 
   @Test
-  void 신규_사용자_로그인_시_백그라운드_계산_성능_테스트(){
+  void 신규_사용자_로그인_시_백그라운드_계산_성능_테스트() throws Exception {
     // 웜업 실행
     warmUp();
 
@@ -171,32 +177,48 @@ public class ScholarshipRecommendationPerformanceTest {
     Awaitility.await()
         .atMost(Duration.ofSeconds(10))
         .pollInterval(Duration.ofMillis(200))
-        .until(() -> redisTemplate.opsForValue().get(CACHE_KEY) != null);
+        .until(() -> redisTemplate.hasKey(CACHE_KEY));
 
     long duration = System.currentTimeMillis() - startTime;
     System.out.printf("[성능 테스트 1] 백그라운드 계산 소요 시간: %d ms%n", duration);
   }
 
   @Test
-  void API_캐시_조회_시_사용자_체감_응답_속도_테스트() throws Exception {
+  void 캐시_유무에_따른_API_응답_속도_비교_테스트() throws Exception {
     // 웜업 실행
     warmUp();
 
-    // 캐시 생성
-    scholarshipRecommendationService.calculateRecommendations(TEST_USER_IDENTIFIER);
-
-    // 추천 API 호출
-    long startTime = System.currentTimeMillis();
+    // 캐시가 없는 상태에서 API 호출 (Cache Miss)
+    long startTimeMiss = System.currentTimeMillis();
     mockMvc.perform(get("/api/scholarships/recommendation")
-        .with(user(TEST_USER_IDENTIFIER)))
-        .andExpect(status().isOk());
+            .with(user(TEST_USER_IDENTIFIER)))
+        .andExpect(status().isAccepted());
 
-    long duration = System.currentTimeMillis() - startTime;
-    System.out.printf("[성능 테스트 2] API 캐시 조회 응답 시간: %d ms%n", duration);
+    // 백그라운드 계산이 완료되고 캐시가 생성될 때까지 대기
+    Awaitility.await()
+        .atMost(Duration.ofSeconds(10))
+        .pollInterval(Duration.ofMillis(200))
+        .until(() -> redisTemplate.hasKey(CACHE_KEY));
+    long durationMiss = System.currentTimeMillis() - startTimeMiss;
+
+    // 캐시가 생성된 상태에서 API 재호출 (Cache Hit)
+    long startTimeHit = System.currentTimeMillis();
+    mockMvc.perform(get("/api/scholarships/recommendation")
+            .with(user(TEST_USER_IDENTIFIER)))
+        .andExpect(status().isOk());
+    long durationHit = System.currentTimeMillis() - startTimeHit;
+
+    System.out.println("[성능 테스트 2] 캐시 유무에 따른 API 응답 속도 차이");
+    System.out.printf("[성능 비교] 캐시 없을 때 (Cache Miss): %d ms%n", durationMiss);
+    System.out.printf("[성능 비교] 캐시 있을 때 (Cache Hit): %d ms%n", durationHit);
+    if (durationHit > 0) {
+      System.out.printf(">> 응답 속도 %.1f배 향상 (시간 단축: %d ms)%n",
+          (double) durationMiss / durationHit, durationMiss - durationHit);
+    }
   }
 
   @Test
-  void 사용자_정보_업데이트_시_캐시_갱신_성능_테스트() {
+  void 사용자_정보_업데이트_시_캐시_갱신_성능_테스트() throws Exception {
     // 웜업 실행
     warmUp();
 
