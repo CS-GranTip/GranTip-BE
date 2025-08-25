@@ -38,14 +38,17 @@ public class User extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_category_id")
     private UniversityCategory universityCategory;
+    // dto에 id로 주고 받으려면 service에서 id로 찾아서 넣어줘야함
+    // dto에는 Long universityCategoryId
+    // -> service에서 user.setUniversityCategory(universityCategoryService.findById(id));
 
-    private Long universityCategoryIdReal;
+    // private Long universityCategoryIdReal;
 
     private String currentSchool;
 
     private String highSchool;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)     //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)     //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?
     @JoinColumn(name = "extra_info_id")
     private UserExtraInfo extraInfo;
 
@@ -60,14 +63,14 @@ public class User extends BaseEntity {
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) Json 변환 오류
     private Region address; //현재 거주 주소
 
-    private Long addressId;
+    // private Long addressId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resident_address_region_id")
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Region residentAddress; //주민등록상 주소
 
-    private Long residentAddressId;
+    // private Long residentAddressId;
 
     @Enumerated(EnumType.STRING)
     private Role role;

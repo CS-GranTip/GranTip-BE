@@ -62,15 +62,15 @@ public class AuthService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .universityCategory(universityCategoryService.findById(request.getUniversityCategoryId()))
-                .universityCategoryIdReal(request.getUniversityCategoryId())
+                //.universityCategoryIdReal(request.getUniversityCategoryId())
                 .currentSchool(request.getCurrentSchool())
                 .highSchool(request.getHighSchool())
                 .universityYear(request.getUniversityYear())
                 .gender(request.getGender())
                 .address(regionService.findById(request.getAddressId()))
-                .addressId(request.getAddressId())
+                //.addressId(request.getAddressId())
                 .residentAddress(regionService.findById(request.getResidentAddressId()))
-                .residentAddressId(request.getResidentAddressId())
+                //.residentAddressId(request.getResidentAddressId())
                 .build();
         userService.saveUser(user);
     }
@@ -85,7 +85,7 @@ public class AuthService {
             // 인증 성공 시 사용자 정보 가져오기
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             // 비동기 추천 계산 실행
-            recommendationAsyncService.triggerRecommendationCalculation(userDetails.getUsername());
+            // recommendationAsyncService.triggerRecommendationCalculation(userDetails.getUsername());
 
             // 토큰 생성
             String accessToken = jwtUtil.createAccessToken(userDetails);
