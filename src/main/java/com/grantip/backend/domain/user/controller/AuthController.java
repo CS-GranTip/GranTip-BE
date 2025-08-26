@@ -1,7 +1,6 @@
 package com.grantip.backend.domain.user.controller;
 
 import com.grantip.backend.domain.token.domain.dto.TokenDto;
-import com.grantip.backend.domain.token.service.TokenService;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.domain.dto.request.LoginRequest;
 import com.grantip.backend.domain.user.domain.dto.request.SignupRequest;
@@ -9,7 +8,6 @@ import com.grantip.backend.domain.user.service.AuthService;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
 import com.grantip.backend.global.response.ApiResponse;
-import com.grantip.backend.global.util.JWTUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +30,6 @@ import org.springframework.web.bind.annotation.*;
 )
 public class AuthController implements AuthControllerDocs {
     private final AuthService authService;
-    private final AuthenticationManager authenticationManager;
-    private final JWTUtil jwtUtil;
-    private final TokenService tokenService;
 
     @Override
     @PostMapping("/signup")
@@ -100,7 +94,7 @@ public class AuthController implements AuthControllerDocs {
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
                 .body(ApiResponse.<Void>builder().success(true).code(201).message("토큰이 성공적으로 재발급 되었습니다.").build());
     }
-    // 아니다 refreshToken 도갖고와서 또 쿠키적용까지 똑같이 해야겠네
+    // 아니다 refreshToken 도 갖고와서 또 쿠키적용까지 똑같이 해야겠네
 
     @Override
     @PostMapping("/logout")

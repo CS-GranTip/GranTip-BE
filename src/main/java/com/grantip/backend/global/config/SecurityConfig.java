@@ -113,7 +113,7 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true);
         // 요청 헤더 허용
         configuration.setAllowedHeaders(Collections.singletonList("*"));
-        // 응답 헤더에 'Authorization' 을 노출
+        // 응답 헤더에 'Authorization' 을 노출. 프론트측이 볼 수 있게
         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
         // preflight 캐시 시간
         configuration.setMaxAge(3600L);
