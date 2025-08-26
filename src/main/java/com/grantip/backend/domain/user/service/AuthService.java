@@ -3,7 +3,7 @@ package com.grantip.backend.domain.user.service;
 
 import com.grantip.backend.domain.email.service.EmailService;
 import com.grantip.backend.domain.region.service.RegionService;
-import com.grantip.backend.domain.scholarship.service.RecommendationAsyncService;
+import com.grantip.backend.domain.scholarship.event.RecommendationCalculateEvent;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.token.domain.dto.TokenDto;
 import com.grantip.backend.domain.token.service.TokenService;
@@ -17,6 +17,7 @@ import com.grantip.backend.global.util.JWTUtil;
 import com.grantip.backend.domain.user.domain.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +36,7 @@ public class AuthService {
     private final EmailService emailService;
     private final UniversityCategoryService universityCategoryService;
     private final RegionService regionService;
-    private final RecommendationAsyncService recommendationAsyncService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private static final String REDIS_PREFIX = "RT:";
 
@@ -85,7 +86,8 @@ public class AuthService {
             // 인증 성공 시 사용자 정보 가져오기
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             // 비동기 추천 계산 실행
-            // recommendationAsyncService.triggerRecommendationCalculation(userDetails.getUsername());
+
+            applicationEventPublisher.publishEvent(new RecommendationCalculateEvent(userDetails.getUsername()));
 
             // 토큰 생성
             String accessToken = jwtUtil.createAccessToken(userDetails);
