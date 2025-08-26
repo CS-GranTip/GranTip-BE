@@ -1,6 +1,7 @@
 package com.grantip.backend.domain.user.service;
 
 import com.grantip.backend.domain.region.service.RegionService;
+import com.grantip.backend.domain.scholarship.event.RecommendationRefreshEvent;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
@@ -13,6 +14,7 @@ import com.grantip.backend.domain.user.repository.UserRepository;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UniversityCategoryService universityCategoryService;
     private final RegionService regionService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
 
     public User findByEmail(String email){
@@ -94,6 +97,8 @@ public class UserService {
 
         // 5) 저장은 트랜잭션 커밋 시점에 자동 반영 (cascade=ALL 이면 userRepository.save(user) 만으로 충분)
         userRepository.save(user);
+        // 추천 데이터 갱신 비동기 실행
+        applicationEventPublisher.publishEvent(new RecommendationRefreshEvent(identifier));
     }
 
     @Transactional
