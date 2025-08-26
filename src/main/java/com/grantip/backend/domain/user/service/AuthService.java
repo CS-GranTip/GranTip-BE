@@ -63,15 +63,12 @@ public class AuthService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .universityCategory(universityCategoryService.findById(request.getUniversityCategoryId()))
-                .universityCategoryIdReal(request.getUniversityCategoryId())
                 .currentSchool(request.getCurrentSchool())
                 .highSchool(request.getHighSchool())
                 .universityYear(request.getUniversityYear())
                 .gender(request.getGender())
                 .address(regionService.findById(request.getAddressId()))
-                .addressId(request.getAddressId())
                 .residentAddress(regionService.findById(request.getResidentAddressId()))
-                .residentAddressId(request.getResidentAddressId())
                 .build();
         userService.saveUser(user);
     }
@@ -86,6 +83,7 @@ public class AuthService {
             // 인증 성공 시 사용자 정보 가져오기
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             // 비동기 추천 계산 실행
+
             applicationEventPublisher.publishEvent(new RecommendationCalculateEvent(userDetails.getUsername()));
 
             // 토큰 생성
@@ -100,12 +98,6 @@ public class AuthService {
             throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
     }
-    /* 에러 로그찍어보기
-    log.warn("FCM 푸시 전송 실패 - token: {}, error: {}", token.getToken(), e.getMessage());
-                if (e.getMessage().contains("registration-token-not-registered")) {
-                    fcmTokenRepository.delete(token);
-                }
-     */
 
     public TokenDto reissue(String refreshToken) {
 
@@ -150,14 +142,6 @@ public class AuthService {
         // tokenService.setBlacklist(accessToken, expiration);
     }
 
-
-    public void sendVerificationCode(String email) {
-        emailService.sendVerificationCode(email);
-    }
-
-    public void verifyCode(String email, String code) {
-        emailService.verifyCode(email, code);
-    }
 
 
 }

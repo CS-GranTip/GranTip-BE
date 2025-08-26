@@ -5,7 +5,6 @@ import com.grantip.backend.domain.scholarship.event.RecommendationRefreshEvent;
 import com.grantip.backend.domain.scholarship.service.UniversityCategoryService;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
-import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
 import com.grantip.backend.domain.user.domain.constant.Role;
 import com.grantip.backend.domain.user.domain.dto.response.MyPageResponse;
 import com.grantip.backend.domain.user.domain.dto.response.UserResponse;
@@ -49,41 +48,18 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void verifyCurrentPassword(String email, String currentPassword){
-        User user = findByEmail(email);
-        if(!passwordEncoder.matches(currentPassword, user.getPassword())){
-            throw new CustomException(ErrorCode.INCORRECT_CURRENT_PASSWORD);
-        }
-    }
     public CustomUserDetails loadUserDetailsByEmail(String email) {
         return userRepository.findByEmail(email)
                 .<CustomUserDetails>map(CustomUserDetails::new)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
     }
-    /*
-    @Transactional
-    public void updatePassword(String LoginId, PasswordUpdate passwordUpdate){
-        User user = findByLoginId(LoginId);
-        verifyCurrentPassword(LoginId, passwordUpdate.getCurrentPassword());
-        if(passwordEncoder.matches(passwordUpdate.getNewPassword(), user.getPassword())){
-            throw new CustomException(ErrorCode.SAME_AS_OLD_PASSWORD);
-        }
-        user.setPassword(passwordEncoder.encode(passwordUpdate.getNewPassword()));
-    }
-    */
-    public void verifyPassword(VerifyPassword verifyPassword) {
-        String p1 = verifyPassword.getPassword1();
-        String p2 = verifyPassword.getPassword2();
 
-        if(!p1.equals(p2)) {
-            throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
-        }
-    }
     @Transactional
     public void deleteUser(String identifier){
 
         User user = findByEmail(identifier);
         user.setActive(false);
+        user.setExtraInfo(null);
         userRepository.delete(user);
         //eventPublisher.publishEvent(new UserDeletedEvent(user));
     }
@@ -95,15 +71,12 @@ public class UserService {
         // 2) User 필드 업데이트
         user.setPhone(req.getPhone());
         user.setUniversityCategory(universityCategoryService.findById(req.getUniversityCategoryId()));
-        user.setUniversityCategoryIdReal(req.getUniversityCategoryId());
         user.setCurrentSchool(req.getCurrentSchool());
         user.setHighSchool(req.getHighSchool());
         user.setUniversityYear(req.getUniversityYear());
         user.setGender(req.getGender());
         user.setAddress(regionService.findById(req.getAddressId()));
-        user.setAddressId(req.getAddressId());
         user.setResidentAddress(regionService.findById(req.getResidentAddressId()));
-        user.setResidentAddressId(req.getResidentAddressId());
 
         // 3) UserExtraInfo 준비
         UserExtraInfo extra = user.getExtraInfo();
@@ -136,7 +109,7 @@ public class UserService {
 
         userResponse.setEmail(user.getEmail());
         userResponse.setPhone(user.getPhone());
-        userResponse.setUniversityCategoryId(user.getUniversityCategoryIdReal());
+        userResponse.setUniversityCategoryId(user.getUniversityCategory().getId());
         userResponse.setCurrentSchool(user.getCurrentSchool());
         userResponse.setHighSchool(user.getHighSchool());
         userResponse.setUniversityYear(user.getUniversityYear());
@@ -147,13 +120,13 @@ public class UserService {
             String full = regionService.getFullRegionName(addrId);
             userResponse.setAddress(full);
         }
-        userResponse.setAddressId(user.getAddressId());
+        userResponse.setAddressId(user.getAddress().getId());
         if (user.getResidentAddress() != null) {
             Long resId = user.getResidentAddress().getId();
             String full = regionService.getFullRegionName(resId);
             userResponse.setResidentAddress(full);
         }
-        userResponse.setResidentAddressId(user.getResidentAddressId());
+        userResponse.setResidentAddressId(user.getResidentAddress().getId());
 
 
         // UserExtraInfo 준비 (없으면 새로 생성)
@@ -194,6 +167,11 @@ public class UserService {
         myPageResponse.setUserUniversity(user.getCurrentSchool());
 
         return myPageResponse;
+    }
+
+    public void updatePassword(String identifier, String newPassword) {
+        User user = findByEmail(identifier);
+        user.setPassword(newPassword);
     }
 
 

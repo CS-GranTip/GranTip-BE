@@ -1,13 +1,10 @@
 package com.grantip.backend.domain.user.domain.dto.response;
 
-import com.grantip.backend.domain.region.domain.entity.Region;
+
 import com.grantip.backend.domain.scholarship.domain.constant.QualificationCode;
-import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import com.grantip.backend.domain.user.domain.constant.Gender;
 import com.grantip.backend.domain.user.domain.constant.UnivYear;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.HashSet;

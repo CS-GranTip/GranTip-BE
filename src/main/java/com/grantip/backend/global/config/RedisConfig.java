@@ -26,7 +26,7 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int redisPort;
 
-    // ← .ssl.enabled 로 바꿔야 yml 값이 바인딩됩니다.
+    // .ssl.enabled 로 바꿔야 yml 값이 바인딩됩니다.
     @Value("${spring.data.redis.ssl.enabled}")
     private boolean useSsl;
 

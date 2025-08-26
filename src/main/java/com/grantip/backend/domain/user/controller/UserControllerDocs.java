@@ -1,7 +1,6 @@
 package com.grantip.backend.domain.user.controller;
 
 import com.grantip.backend.domain.user.domain.dto.request.UpdateRequest;
-import com.grantip.backend.domain.user.domain.dto.request.VerifyPassword;
 import com.grantip.backend.domain.user.domain.dto.response.MyPageResponse;
 import com.grantip.backend.domain.user.domain.dto.response.UserResponse;
 import com.grantip.backend.global.response.ApiResponse;
@@ -136,33 +135,34 @@ public interface UserControllerDocs {
   );
 
   @Operation(
-      summary = "비밀번호 검증",
-      description = """
+          summary = "비밀번호 수정",
+          description = """
             ### 요청 파라미터
             - 인증 헤더: `Authorization: Bearer {token}` (required)
-            - 요청 본문 (VerifyPassword):
-              - `password1` (String, required): 새 비밀번호
-              - `password2` (String, required): 새 비밀번호 확인
+            - 요청 본문 (String, required): 
+              - `newPassword` (String, required): 새 비밀번호
 
             ### 응답 데이터
             - 없음 (Void)
 
             ### 사용 방법
-            1. HTTP `PATCH /user/password/verify` 요청을 보냅니다.
-            2. 헤더에 유효한 AccessToken을 포함합니다.
-            3. 요청 본문에 새 비밀번호와 확인 값을 전달합니다.
+            1. HTTP `POST /password/update` 요청을 보냅니다.
+            2. 헤더에 유효한 `AccessToken`을 포함합니다.
+            3. 요청 본문에 새 비밀번호를 전달합니다.
 
             ### 유의 사항
-            - `password1`과 `password2`가 일치해야 합니다.
+            - `newPassword`는 유효한 형식을 갖추어야 하며, 비밀번호 규칙을 따릅니다.
 
             ### 예외 처리
             - `UNAUTHORIZED` (401): 인증되지 않은 사용자입니다.
-            - `BAD_REQUEST` (400): 비밀번호 형식 또는 불일치 시 반환됩니다.
+            - `BAD_REQUEST` (400): 비밀번호 형식 오류 (예: 비밀번호 길이 부족 등)
             - `USER_NOT_FOUND` (404): 해당 사용자를 찾을 수 없습니다.
             """
   )
-  ResponseEntity<ApiResponse<Void>> verifyPassword(
-      UserDetails userDetails,
-      VerifyPassword verifyPassword
+  ResponseEntity<ApiResponse<Void>> updatePassword(
+          UserDetails userDetails,
+          String newPassword
   );
+
+
 }

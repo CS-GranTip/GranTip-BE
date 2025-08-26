@@ -1,6 +1,5 @@
 package com.grantip.backend.domain.user.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.grantip.backend.domain.region.domain.entity.Region;
 import com.grantip.backend.domain.scholarship.domain.entity.UniversityCategory;
 import com.grantip.backend.domain.user.domain.constant.Gender;
@@ -40,13 +39,11 @@ public class User extends BaseEntity {
     @JoinColumn(name = "university_category_id")
     private UniversityCategory universityCategory;
 
-    private Long universityCategoryIdReal;
-
     private String currentSchool;
 
     private String highSchool;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)     //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)     //many로 할거면 차라리 아래 특수를 하나씩 선택하게 하는건?
     @JoinColumn(name = "extra_info_id")
     private UserExtraInfo extraInfo;
 
@@ -61,14 +58,10 @@ public class User extends BaseEntity {
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) Json 변환 오류
     private Region address; //현재 거주 주소
 
-    private Long addressId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resident_address_region_id")
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Region residentAddress; //주민등록상 주소
-
-    private Long residentAddressId;
 
     @Enumerated(EnumType.STRING)
     private Role role;

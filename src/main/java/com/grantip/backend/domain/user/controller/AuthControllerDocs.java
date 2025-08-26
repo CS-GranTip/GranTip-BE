@@ -62,8 +62,7 @@ public interface AuthControllerDocs {
           - `password` (String, required): 비밀번호
 
           ### 응답 데이터
-          - `accessToken` (String): 발급된 엑세스 토큰
-          - `refreshToken` (String): 발급된 리프레시 토큰
+          - 없음 (Void)
           
           ### 사용 방법
           1. HTTP `POST /auth/login` 요청을 보냅니다.
