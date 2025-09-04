@@ -161,7 +161,7 @@ public interface UserControllerDocs {
   )
   ResponseEntity<ApiResponse<Void>> updatePassword(
           UserDetails userDetails,
-          String newPassword
+          UserController.UpdatePasswordRequest req
   );
 
 

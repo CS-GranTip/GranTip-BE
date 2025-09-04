@@ -17,6 +17,7 @@ import com.grantip.backend.global.util.JWTUtil;
 import com.grantip.backend.domain.user.domain.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,8 +26,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -75,6 +79,17 @@ public class AuthService {
 
     public TokenDto login(LoginRequest request){
         try{
+            // (임시 진단) DB 저장값과 비교
+            var user = userService.findByEmail(request.getEmail());
+            String stored = user.getPassword();
+            String raw    = request.getPassword();
+
+            boolean mExact = passwordEncoder.matches(raw, stored);
+            boolean mTrim  = passwordEncoder.matches(raw == null ? null : raw.trim(), stored);
+            boolean mNfc   = passwordEncoder.matches(Normalizer.normalize(raw, Normalizer.Form.NFC), stored);
+
+            log.info("login pwd check: exact={}, trim={}, nfc={}", mExact, mTrim, mNfc);
+            // ---- 여기까지 임시 진단 ----
             // 인증 시도
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())

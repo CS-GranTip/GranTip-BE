@@ -14,6 +14,7 @@ import com.grantip.backend.domain.user.repository.UserRepository;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -131,6 +133,8 @@ public class UserService {
 
         // UserExtraInfo 준비 (없으면 새로 생성)
         UserExtraInfo extra = user.getExtraInfo();
+
+
         if (extra == null) {
             extra = UserExtraInfo.builder()
                     .user(user)         // 양방향 연관관계 세팅
@@ -161,7 +165,6 @@ public class UserService {
     public MyPageResponse myPageInfo(String identifier) {
         User user = findByEmail(identifier);
         MyPageResponse myPageResponse = new MyPageResponse();
-
         myPageResponse.setUserId(user.getId());
         myPageResponse.setUsername(user.getUsername());
         myPageResponse.setUserUniversity(user.getCurrentSchool());
@@ -169,12 +172,13 @@ public class UserService {
         return myPageResponse;
     }
 
-    public void updatePassword(String identifier, String newPassword) {
-        User user = findByEmail(identifier);
-        user.setPassword(newPassword);
+    @Transactional
+    public void updatePassword(String email, String newPassword) {
+        User user = findByEmail(email);
+        if(passwordEncoder.matches(newPassword, user.getPassword())){
+            throw new CustomException(ErrorCode.SAME_AS_OLD_PASSWORD);
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
     }
-
-
-
 }
 

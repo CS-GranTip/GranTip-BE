@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -63,15 +64,18 @@ public class UserController implements UserControllerDocs {
                 .body(ApiResponse.<Void>builder().success(true).code(200).message("회원 탈퇴에 성공했습니다.").build());
     }
 
+    public record UpdatePasswordRequest(
+            @jakarta.validation.constraints.NotBlank String newPassword
+    ) {}
     @Override
-    @PostMapping("/password/update")
+    @PostMapping(value = "/password/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<Void>> updatePassword(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody String newPassword) {
+            @Valid @RequestBody UpdatePasswordRequest req) {
 
-        userService.updatePassword(userDetails.getUsername(), newPassword);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.<Void>builder().success(true).code(200).message("비밀번호가 수정되었습니다.").build());
+        userService.updatePassword(userDetails.getUsername(), req.newPassword());
+        return ResponseEntity.ok(ApiResponse.<Void>builder()
+                .success(true).code(200).message("비밀번호가 수정되었습니다.").build());
     }
 
 
