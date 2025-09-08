@@ -4,6 +4,7 @@ import com.grantip.backend.domain.token.domain.dto.TokenDto;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.domain.dto.request.LoginRequest;
 import com.grantip.backend.domain.user.domain.dto.request.SignupRequest;
+import com.grantip.backend.domain.user.domain.dto.response.MyPageResponse;
 import com.grantip.backend.domain.user.service.AuthService;
 import com.grantip.backend.global.code.ErrorCode;
 import com.grantip.backend.global.exception.CustomException;
@@ -67,7 +68,7 @@ public class AuthController implements AuthControllerDocs {
 
     @Override
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResponse<Void>> reissue(HttpServletRequest request){
+    public ResponseEntity<ApiResponse<MyPageResponse>> reissue(HttpServletRequest request){
         // String refreshToken = (String) request.getAttribute("refreshToken"); 로컬스토리지 일때인듯
         String requestRefreshToken = null;
         Cookie[] cookies = request.getCookies();
@@ -89,10 +90,14 @@ public class AuthController implements AuthControllerDocs {
                 .sameSite("Strict") // 또는 "Lax", 필요에 따라 조정
                 .build();
 
-        return ResponseEntity.ok()
+        MyPageResponse myPageResponse = new MyPageResponse();
+        myPageResponse.setUserUniversity("세종대학교");
+        myPageResponse.setUserId(40L);
+        myPageResponse.setUsername("리찬양");
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Authorization", "Bearer " + tokenDto.getAccessToken())
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(ApiResponse.<Void>builder().success(true).code(201).message("토큰이 성공적으로 재발급 되었습니다.").build());
+                .body(ApiResponse.<MyPageResponse>builder().success(true).code(201).result(myPageResponse).message("토큰이 성공적으로 재발급 되었습니다.").build());
     }
     // 아니다 refreshToken 도 갖고와서 또 쿠키적용까지 똑같이 해야겠네
 
