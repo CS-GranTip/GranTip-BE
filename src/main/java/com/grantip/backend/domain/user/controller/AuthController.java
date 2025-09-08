@@ -77,16 +77,16 @@ public class AuthController implements AuthControllerDocs {
             }
         }
         if (requestRefreshToken == null) {
-            //return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
         TokenDto tokenDto = authService.reissue(requestRefreshToken);
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokenDto.getRefreshToken())
                 .httpOnly(true)
-                .secure(true) // HTTPS 사용할 경우 true
+                .secure(false) // HTTPS 사용할 경우 true
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60) // 7일
-                .sameSite("Strict") // 또는 "Lax", 필요에 따라 조정
+                .sameSite("None") // 또는 "Lax", 필요에 따라 조정
                 .build();
 
         return ResponseEntity.ok()
