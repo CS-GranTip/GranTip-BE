@@ -3,7 +3,6 @@ package com.grantip.backend.domain.user.controller;
 import com.grantip.backend.domain.user.domain.dto.CustomUserDetails;
 import com.grantip.backend.domain.user.domain.dto.request.LoginRequest;
 import com.grantip.backend.domain.user.domain.dto.request.SignupRequest;
-import com.grantip.backend.domain.user.domain.dto.response.MyPageResponse;
 import com.grantip.backend.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -108,7 +107,7 @@ public interface AuthControllerDocs {
             - `INTERNAL_SERVER_ERROR` (500): 서버 내부 오류 발생 시 반환됩니다.
             """
   )
-  ResponseEntity<ApiResponse<MyPageResponse>> reissue(HttpServletRequest request);
+  ResponseEntity<ApiResponse<Void>> reissue(HttpServletRequest request);
 
   @Operation(
       summary = "로그아웃",
